@@ -3,6 +3,8 @@
 ## Using
 - Express.js
 - Swagger
+- MongoDB
+- Redis(Not Sure)
 - Heroku or AWS
 
 ## Modules
