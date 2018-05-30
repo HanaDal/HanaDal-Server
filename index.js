@@ -2,8 +2,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
-mongoose.Promise = global.Promise;
-mongoose.connect(process.env.MONGODB_URI);
+//mongoose.Promise = global.Promise;
+//mongoose.connect(process.env.MONGODB_URI);
 
 const PORT = process.env.PORT || 12345;
 
