@@ -2,13 +2,14 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
-//mongoose.Promise = global.Promise;
+const app = express();
+
+mongoose.Promise = global.Promise;
 //mongoose.connect(process.env.MONGODB_URI);
 
-const PORT = process.env.PORT || 12345;
-
-express()
+app.set('PORT', process.env.PORT || 12345)
     .use(bodyParser.json())
     .use(bodyParser.urlencoded({extended : true}))
-    .get('/', (req, res) => res.send("<h1>Hello, World!</h1>"))
-    .listen(PORT, () => console.log(`Listening at ${PORT}`));
+    .get('/', (req, res) => res.send('<h1>Hello, World!</h1>'));
+
+module.exports = app;
