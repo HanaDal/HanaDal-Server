@@ -4,7 +4,7 @@
   "description": "Java Team Project",
   "main": "index.js",
   "scripts": {
-    "start": "node ./bin/www.js",
+    "start": "eslint eslint **/*.js && node ./bin/www.js",
     "test": "mocha ./routes/**/*.spec.js"
   },
   "repository": {

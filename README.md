@@ -16,7 +16,9 @@
 - json-web-token
 - eslint
 - swagger-ui-dist
+- Cluster 모듈 이용해보기
 
 ## TODO
-- Cluster 모듈 이용해보기
 - 설계
+    - 책 컬렉션
+    - 트렌딩 컬렉션
