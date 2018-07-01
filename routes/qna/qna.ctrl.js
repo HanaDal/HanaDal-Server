@@ -8,12 +8,14 @@ function getQnas(req, res) {
                 result: 'failure'
             });
         }
-        
+
         qnas.forEach((qna) => {
             data.push({
                 id: qna._id
             });
         });
+        
+        res.status(200).json(data);
     });
 }
 
