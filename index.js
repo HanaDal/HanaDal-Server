@@ -10,6 +10,7 @@ mongoose.Promise = global.Promise;
 app.set('PORT', process.env.PORT || 12345)
     .use(bodyParser.json())
     .use(bodyParser.urlencoded({extended : true}))
+    .use('/api', require('./routes/index'))
     .get('/', (req, res) => res.send('<h1>Hello, World!</h1>'));
 
 module.exports = app;
