@@ -1,7 +1,20 @@
 const QnA = require('../../model/qna');
 
 function getQnas(req, res) {
-    res.status(200).json({title: 'hello'});
+    let data = [];
+    QnA.find((err, qnas) => {
+        if(err) {
+            return res.status('500').json({
+                result: 'failure'
+            });
+        }
+        
+        qnas.forEach((qna) => {
+            data.push({
+                id: qna._id
+            });
+        });
+    });
 }
 
 function writeQna(req, res) {
@@ -11,7 +24,14 @@ function writeQna(req, res) {
     newQnA.content = req.body.content;
     newQnA.coment = [];
 
-    res.status(200).json({result: 'success'});
+    newQnA.save((err) => {
+        if(err) {
+            return res.status('500').json({
+                result: 'failure'
+            });
+        }
+        res.status(200).json({result: 'success'});
+    });
 }
 
 exports.getQnas = getQnas;
