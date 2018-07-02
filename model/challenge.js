@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const Post = require('./post');
 
 const Challenge = new Schema({
     owner: {type: String, ref: 'users'},
@@ -11,7 +10,14 @@ const Challenge = new Schema({
         isStrict: Boolean
     },
     tags: [{ tag: String }],
-    issue: [Post],
+    issue: [{
+        writer: {type: String, ref: 'users'},
+        content: String,
+        comment: [{
+            writer: {type: String, ref: 'users'},
+            content: String
+        }]}
+    ],
     //TODO: 할일, 다이어리, 응원
 });
 

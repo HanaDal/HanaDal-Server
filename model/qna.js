@@ -1,11 +1,14 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const Post = require('./post');
 
 const Qna = new Schema({
-    tags: [{ tag: String }],
-    Post
-    //위의 Post가 잘 되는지 확인
+    tags: [String],
+    writer: {type: String, ref: 'users'},
+    content: String,
+    comment: [{
+        writer: {type: String, ref: 'users'},
+        content: String
+    }]
 });
 
 module.exports = mongoose.model('qnas', Qna);
