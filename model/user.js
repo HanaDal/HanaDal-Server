@@ -7,12 +7,14 @@ const User = new Schema({
     introduce: String,  
     picture: String,
     point: Number,
-    tags: [{ tag: String }],
+    tags: [String],
     items: {
-        skin: [{itemNo: String}],
-        badge: [{itemNo: String}]
-    }
-    //응원한 도전 목록
+        skin: [{itemNo: {type: String, ref: 'items'}}],
+        badge: [{itemNo: {type: String, ref: 'items'}}]
+    },
+    cheering: [{
+        _id: {type: String, ref: 'challenges'}
+    }]
 });
 
-module.exports = mongoose.model('users', User);
+module.exports = mongoose.model('User', User);

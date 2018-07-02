@@ -3,6 +3,7 @@ const Schema = mongoose.Schema;
 
 const Challenge = new Schema({
     owner: {type: String, ref: 'users'},
+    picture: String,
     title: String,
     description: String,
     option: {
@@ -10,6 +11,7 @@ const Challenge = new Schema({
         isStrict: Boolean
     },
     tags: [{ tag: String }],
+    cheer: Number,
     issue: [{
         writer: {type: String, ref: 'users'},
         content: String,
@@ -18,7 +20,11 @@ const Challenge = new Schema({
             content: String
         }]}
     ],
-    //TODO: 할일, 다이어리, 응원
+    diary: [{
+        content: String,
+        todo: String
+    }],
+    startDate: Date
 });
 
-module.exports = mongoose.model('challenges', Challenge);
+module.exports = mongoose.model('Challenge', Challenge);

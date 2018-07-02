@@ -11,4 +11,4 @@ const Qna = new Schema({
     }]
 });
 
-module.exports = mongoose.model('qnas', Qna);
+module.exports = mongoose.model('Qna', Qna);
