@@ -3,6 +3,7 @@ const Schema = mongoose.Schema;
 
 const Qna = new Schema({
     tags: [String],
+    title: String,
     writer: {type: String, ref: 'users'},
     content: String,
     comment: [{
