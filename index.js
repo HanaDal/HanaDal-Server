@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const app = express();
 
 mongoose.Promise = global.Promise;
-mongoose.connect(process.env.MONGODB_URI);
+mongoose.connect(process.env.MONGODB_URI || require('./config').MONGODB_URI);
 
 app.set('PORT', process.env.PORT)
     .use(bodyParser.json())
