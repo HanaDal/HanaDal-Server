@@ -5,9 +5,9 @@ const mongoose = require('mongoose');
 const app = express();
 
 mongoose.Promise = global.Promise;
-//mongoose.connect(process.env.MONGODB_URI);
+mongoose.connect(process.env.MONGODB_URI);
 
-app.set('PORT', process.env.PORT || 12345)
+app.set('PORT', process.env.PORT)
     .use(bodyParser.json())
     .use(bodyParser.urlencoded({extended : true}))
     .use('/api', require('./routes/index'))

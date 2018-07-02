@@ -21,13 +21,17 @@ function getQnas(req, res) {
 
 function writeQna(req, res) {
     let newQnA = new QnA();
+
     newQnA.tags = req.body.tags.split(',');
     newQnA.writer = req.body.writer;
     newQnA.content = req.body.content;
-    newQnA.coment = [];
+    newQnA.comment = [];
+
+    console.log(newQnA);
 
     newQnA.save((err) => {
         if(err) {
+            console.log(err);
             return res.status('500').json({
                 result: 'failure'
             });
