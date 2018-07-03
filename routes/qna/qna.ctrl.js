@@ -11,7 +11,9 @@ function getQnas(req, res) {
 
         qnas.forEach((qna) => {
             data.push({
-                id: qna._id
+                id: qna._id,
+                title: qna.title,
+                content: qna.content
             });
         });
         
@@ -23,12 +25,11 @@ function writeQna(req, res) {
     let newQnA = new QnA();
 
     newQnA.tags = req.body.tags.split(',');
+    newQnA.title = req.body.title;
     newQnA.writer = req.body.writer;
     newQnA.content = req.body.content;
     newQnA.comment = [];
-
-    console.log(newQnA);
-
+    
     newQnA.save((err) => {
         if(err) {
             console.log(err);
@@ -40,5 +41,15 @@ function writeQna(req, res) {
     });
 }
 
+function deleteQna(req, res) {
+    res.status(200).json({result: 'success'});
+}
+
+function getQnaDetail(req, res) {
+    res.status(200).json({});
+}
+
 exports.getQnas = getQnas;
 exports.writeQna = writeQna;
+exports.deleteQna = deleteQna;
+exports.getQnaDetail = getQnaDetail;
