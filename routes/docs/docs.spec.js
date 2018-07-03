@@ -42,6 +42,7 @@ describe('/api/docs', () => {
                 .expect(403)
                 .end(() => done());
             });
+            //https://github.com/visionmedia/supertest/issues/283
         });
     });
 });
