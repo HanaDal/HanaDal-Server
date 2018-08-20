@@ -9,7 +9,9 @@ describe('/api/qna', () => {
                 .get('/api/qna')
                 .expect(200)
                 .expect('Content-Type', /json/)
-                .end(() => done());
+                .end((err, res) => {
+                    done();
+                });
             });
         });
     });
