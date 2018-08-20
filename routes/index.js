@@ -1,7 +1,7 @@
-const express = require('express');
-const router = express.Router();
+const router = require('express').Router();
 
-router.use('/qna', require('./qna/index'));
-router.use('/docs', require('./docs/index'));
+router.use('/challenge', require('./challenge/index'))
+    .use('/qna', require('./qna/index'))
+    .use('/docs', require('./docs/index'));
 
 module.exports = router;
