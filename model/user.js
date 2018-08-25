@@ -5,7 +5,7 @@ const User = new Schema({
     _id: String,
     name: String,
     picture: String,
-    point: Number,
+    point: { type: Number, default: 0 },
     tags: [String],
     items: {
         skin: [{itemNo: {type: String, ref: 'items'}}],
