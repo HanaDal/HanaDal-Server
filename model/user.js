@@ -11,9 +11,7 @@ const User = new Schema({
         skin: [String],
         badge: [String]
     },
-    cheering: [{
-        _id: {type: String, ref: 'challenges'}
-    }]
+    cheering: [{type: String, ref: 'challenges'}]
 });
 
 module.exports = mongoose.model('User', User);
