@@ -19,6 +19,7 @@ const newUser = function saveNewUser(id, name, tags) {
     newUser.save();
 };
 
+//TODO: 메인에 필요한 정보 제공하기
 const login = async function login(req, res) {
     const { id, name, tags } = req.body;
     const user = await User.findOne({ id: id });
@@ -33,7 +34,7 @@ const login = async function login(req, res) {
 
 const getUserInfo = async function getUserInfoWithId(req, res) {
     const user = await User.findById(req.params.id);
-    
+    //TODO: 걸러내기
     res.status(200).json(user);
 };
 
