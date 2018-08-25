@@ -8,8 +8,8 @@ const User = new Schema({
     point: { type: Number, default: 0 },
     tags: [String],
     items: {
-        skin: [{itemNo: {type: String, ref: 'items'}}],
-        badge: [{itemNo: {type: String, ref: 'items'}}]
+        skin: [String],
+        badge: [String]
     },
     cheering: [{
         _id: {type: String, ref: 'challenges'}
