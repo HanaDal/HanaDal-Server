@@ -6,10 +6,8 @@ const Challenge = new Schema({
     picture: String,
     title: String,
     description: String,
-    option: {
-        isPublic: Boolean,
-        isStrict: Boolean
-    },
+    isPublic: Boolean,
+    isStrict: Boolean,
     tags: [{ tag: String }],
     cheer: Number,
     issue: [{
