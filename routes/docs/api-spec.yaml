@@ -1,0 +1,1033 @@
+swagger: '2.0'
+info:
+  description: JavaTeam Project - 하나달
+  version: 0.0.1
+  title: HanaDal Server
+  contact:
+    url: https://github.com/HanaDal/HanaDal-Server/issues
+host: hanadal-server.herokuapp.com
+basePath: /api
+tags:
+- name: User
+  description: 유저 관련
+- name: Challenge
+  description: 도전 관련
+- name: Trending
+  description: 트렌딩
+- name: QnA
+  description: QnA
+- name: Search
+  description: 검색
+schemes:
+- http
+paths:
+  /user/login:
+    post:
+      tags:
+      - User
+      summary: 로그인
+      description: 페이스북 및 카카오 계정으로 로그인하기
+      operationId: userLogin
+      consumes:
+      - application/json
+      - application/x-www-form-urlencoded
+      produces:
+      - application/json
+      parameters:
+      - in: formData
+        name: userId
+        type: string
+        required: true
+        description: 해당 유저의 id
+      responses:
+        100:
+          description: 회원가입 정보가 필요함
+          schema:
+            $ref: '#/definitions/Result'
+        200:
+          description: 로그인 성공 (JWT 유효시간이랑 Refresh Token은 차차 정합시다 ㅎㅎ)
+          schema:
+            $ref: '#/definitions/LoginResult'
+  /user/profile:
+    get:
+      tags:
+      - User
+      summary: 프로필 정보 얻기
+      description: JWT로 유저의 닉네임과 관심분야 얻기
+      operationId: getProfile
+      consumes:
+      - application/json
+      - application/x-www-form-urlencoded
+      produces:
+      - application/json
+      parameters:
+      - name: X-Access-Token
+        in: header
+        type: string
+        required: true
+        description: JWt
+      responses:
+        200:
+          description: 요청 성공
+          schema:
+            $ref: '#/definitions/ProfileResult'
+    put:
+      tags:
+      - User
+      summary: 프로필 정보 변경
+      description: JWT로 유저의 닉네임과 관심분야 선택
+      operationId: changeProfile
+      consumes:
+      - application/json
+      - application/x-www-form-urlencoded
+      produces:
+      - application/json
+      parameters:
+      - name: X-Access-Token
+        in: header
+        type: string
+        required: true
+        description: JWT
+      - name: profileName
+        in: formData
+        type: string
+        description: 바꿀 닉네임
+      - name: profileTags
+        in: formData
+        type: string
+        description: 바꿀 태그
+      responses:
+        205:
+          description: 변경 성공
+          schema:
+            $ref: '#/definitions/Result'
+        403:
+          description: 유효하지 않은 Token
+          schema:
+            $ref: '#/definitions/Result'
+  /user/main:
+    get:
+      tags:
+      - User
+      summary: 메인 정보 얻기
+      description: JWT로 메인에 들어갈 도전, 트렌딩 얻기
+      operationId: getMain
+      consumes: 
+      - application/json
+      - application/x-www-form-urlencoded
+      produces: 
+      - application/json
+      parameters: 
+      - in: header
+        name: X-Access-Token
+        type: string
+        required: true
+        description: JWT
+      responses:
+        200:
+          description: 요청 성공
+          schema:
+            $ref: '#/definitions/Main'
+        403:
+          description: 유효하지 않은 JWT
+          schema:
+            $ref: '#/definitions/Result'
+      deprecated: true
+  /user/cheering:
+    get:
+      tags:
+      - User
+      summary: 공감한 편린들
+      description: JWT로 공감한 편린들 확인하기
+      operationId: getCheeringChallenge
+      consumes:
+      - application/json
+      - application/x-www-form-urlencoded
+      produces:
+      - application/json
+      parameters:
+      - in: header
+        name: X-Access-Token
+        type: string
+        required: true
+        description: JWT
+      responses:
+        200:
+          description: 요청 성공
+          schema:
+            $ref: '#/definitions/Challenges'
+        403:
+          description: 유효하지 않은 JWT
+          schema:
+            $ref: '#/definitions/Result'
+    post:
+      tags:
+      - User
+      summary: 편린에 공감하기
+      description: JWT로 편린에 공감하기
+      operationId: cheeringChallenge
+      consumes:
+      - application/json
+      - application/x-www-form-urlencoded
+      produces:
+      - application/json
+      parameters:
+      - in: header
+        name : X-Access-Token
+        type: string
+        required: true
+        description: JWT
+      - in: formData
+        name: id
+        type: string
+        required: true
+        description: 공감할 편린 id
+      responses:
+        201:
+          description: 요청 성공
+          schema:
+            $ref: '#/definitions/Result'
+        403:
+          description: 유효하지 않은 JWT
+          schema:
+            $ref: '#/definitions/Result'
+  /user/item:
+    get:
+      tags:
+      - User
+      summary: 보유 아이템 확인
+      description: JWT로 보유한 아이템 확인하기
+      operationId: getItems
+      consumes:
+      - application/json
+      - application/x-www-form-urlencoded
+      produces:
+      - application/json
+      parameters:
+      - in: header
+        name: X-Access-Token
+        type: string
+        required: true
+        description: JWT
+      responses:
+        200:
+          description: 요청 성공
+          schema:
+            $ref: '#/definitions/Items'
+        403:
+          description: 유효하지 않은 JWT
+          schema:
+            $ref: '#/definitions/Result'
+    post:
+      tags:
+      - User
+      summary: 아이템 구매
+      description: JWT로 아이템 구매하기
+      operationId: buyItem
+      consumes:
+      - application/json
+      - application/x-www-form-urlencoded
+      produces:
+      - application/json
+      parameters:
+      - in: header
+        name: X-Access-Token
+        type: string
+        required: true
+        description: JWT
+      - in: formData
+        name: id
+        type: string
+        required: true
+        description: 아이템 id
+      responses:
+        200:
+          description: 요청 성공
+          schema:
+            $ref: '#/definitions/Items'
+        403:
+          description: 유효하지 않은 JWT
+          schema:
+            $ref: '#/definitions/Result'
+  /user/store:
+    get:
+      tags:
+      - User
+      summary: 상점
+      description: 상점에 필요한 정보들 확인
+      operationId: getStore
+      consumes:
+      - application/json
+      - application/x-www-form-urlencoded
+      produces:
+      - application/json
+      parameters:
+      - in: header
+        name: X-Access-Token
+        type: string
+        required: true
+        description: JWT
+      responses:
+        200:
+          description: 요청 성공
+          schema:
+            $ref: '#/definitions/Items'
+  /challenge:
+    get:
+      tags:
+      - Challenge
+      summary: 내 도전 조회하기
+      description: JWT로 내 도전 조회하기
+      operationId: getChallenges
+      consumes:
+      - application/json
+      - application/x-www-form-urlencoded
+      produces:
+      - application/json
+      parameters:
+      - in: header
+        name: X-Access-Token
+        type: string
+        required: true
+        description: JWT
+      responses:
+        200:
+          description: 요청 성공
+          schema:
+            $ref: '#/definitions/Challenges'
+        403:
+          description: 유효하지 않은 JWT
+          schema:
+            $ref: '#/definitions/Result'
+    post:
+      tags:
+      - Challenge
+      summary: 도전 만들기
+      description: JWT로 새 도전 만들기
+      operationId: makeChallenge
+      consumes:
+      - application/json
+      - application/x-www-form-urlencoded
+      produces:
+      - application/json
+      parameters:
+      - in: header
+        name: X-Access-Token
+        type: string
+        required: true
+        description: JWT
+      - in: formData
+        name: name
+        type: string
+        required: true
+        description: 도전 이름
+      - in: formData
+        name: description
+        type: string
+        required: true
+        description: 도전 설명
+      - in: formData
+        name: isPublic
+        type: boolean
+        required: true
+        description: 공개 여부
+      - in: formData
+        name: isStrict
+        type: boolean
+        required: true
+        description: 엄격 여부
+      - in: formData
+        name: tags
+        type: string
+        required: true
+        description: 태그들 (ex.운동,건강,기타,등등)
+      responses:
+        200:
+          description: 요청 성공
+          schema:
+            $ref: '#/definitions/Result'
+        403:
+          description: 유효하지 않은 JWT
+          schema:
+            $ref: '#/definitions/Result'
+  /challenge/{id}:
+    get:
+      tags:
+      - Challenge
+      summary: 도전 상세
+      description: 도전 상세하게 보기
+      operationId: getChallengeDetail
+      consumes:
+      - application/json
+      - application/x-www-form-urlencoded
+      produces:
+      - application/json
+      parameters:
+      - in: header
+        name: X-Access-Token
+        type: string
+        required: true
+        description: JWT
+      - in: path
+        name: id
+        type: string
+        required: true
+        description: 해당 도전 id
+      responses:
+        200:
+          description: 요청 성공
+          schema:
+            $ref: '#/definitions/ChallengeDetail'
+        403:
+          description: 유효하지 않은 JWT
+          schema:
+            $ref: '#/definitions/Result'
+        404:
+          description: 해당 도전이 없음
+          schema:
+            $ref: '#/definitions/Result'
+    post:
+      tags:
+      - Challenge
+      summary: 다이어리 작성하기
+      description: 다이어리 작성하기
+      operationId: postChallengeDiary
+      consumes:
+      - application/json
+      - application/x-www-form-urlencoded
+      produces:
+      - application/json
+      parameters:
+      - in: header
+        name: X-Access-Token
+        type: string
+        required: true
+        description: JWT
+      - in: path
+        name: id
+        type: string
+        required: true
+        description: 해당 도전 id
+      responses:
+        201:
+          description: 요청 성공
+          schema:
+            $ref: '#/definitions/Result'
+        403:
+          description: 유효하지 않은 JWT
+          schema:
+            $ref: '#/definitions/Result'
+        404:
+          description: 해당 도전이 없음
+          schema:
+            $ref: '#/definitions/Result'
+  /challenge/{id}/comment:
+    get:
+      tags:
+      - Challenge
+      summary: 도전의 의견 확인하기
+      description: 해당 id에 해당하는 도전의 의견 보기
+      operationId: getCommentsAtChallnege
+      parameters:
+      - in: path
+        name: id
+        description: 해당 도전의 id
+        required: true
+        type: string
+      responses:
+        200:
+          description: 요청 성공
+          schema:
+            $ref: '#/definitions/Qnas'
+    post:
+      tags:
+      - Challenge
+      summary: 도전에 의견 달기
+      description: 해당 id에 해당하는 도전의 의견 작성하기
+      operationId: writeCommentAtChallenge
+      parameters:
+      - in: path
+        name: id
+        description: 해당 도전의 id
+        required: true
+        type: string
+      responses:
+        201:
+          description: 작성 성공
+          schema:
+            $ref: '#/definitions/Result'
+        404:
+          description: 해당 도전이 없음
+          schema:
+            $ref: '#/definitions/Result'
+  /challenge/{id}/info:
+    get:
+      tags:
+      - Challenge
+      summary: 도전 정보
+      description: 도전에 대한 정보
+      operationId: getChallengeInfo
+      consumes:
+      - application/json
+      - application/x-www-form-urlencoded
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        name: id
+        type: string
+        required: true
+        description: 해당 도전의 id
+      responses:
+        200:
+          description: 요청 성공
+          schema:
+            $ref: '#/definitions/ChallengeInfo'
+        404:
+          description: 해당 도전이 없음
+          schema:
+            $ref: '#/definitions/Result'
+    put:
+      tags:
+      - Challenge
+      summary: 도전 정보 수정
+      description: 도전에 대한 정보 수정
+      operationId: modifyChallnegeInfo
+      consumes:
+      - application/json
+      - application/x-www-form-urlencoded
+      produces:
+      - application/json
+      parameters:
+      - in: header
+        name: X-Access-Token
+        type: string
+        required: true
+        description: JWT
+      - in: path
+        name: id
+        type: string
+        required: true
+        description: 해당 도전의 id
+      responses:
+        200:
+          description: 요청 성공
+          schema:
+            $ref: '#/definitions/ChallengeInfo'
+        403:
+          description: 유효하지 않은 JWT
+          schema:
+            $ref: '#/definitions/Result'
+        404:
+          description: 해당 도전이 없음
+          schema:
+            $ref: '#/definitions/Result'
+  /challenge/{id}/fork:
+    post:
+      tags:
+      - Challenge
+      summary: 도전 따라하기
+      description: 도전 따라하기
+      operationId: forkChallenge
+      consumes:
+      - application/json
+      - application/x-www-form-urlencoded
+      produces:
+      - application/json
+      parameters:
+      - in: header
+        name: X-Access-Token
+        type: string
+        required: true
+        description: jWt
+      - in: path
+        name: id
+        type: string
+        required: true
+        description: 해당 도전 id
+      responses:
+        201:
+          description: 요청 성공
+          schema:
+            $ref: '#/definitions/Result'
+        403:
+          description: 유효하지 않은 JWT
+          schema:
+            $ref: '#/definitions/Result'
+        404:
+          description: 해당 도전이 없음
+          schema:
+            $ref: '#/definitions/Result'
+  /book:
+    get:
+      tags:
+      - Challenge
+      summary: 내 책 조회하기
+      description: JWT로 내 책 조회하기
+      operationId: getBooks
+      consumes:
+      - application/json
+      - application/x-www-form-urlencoded
+      produces:
+      - application/json
+      parameters:
+      - in: header
+        name: X-Access-Token
+        type: string
+        required: true
+        description: JWT
+      responses:
+        200:
+          description: 요청 성공
+          schema:
+            $ref: '#/definitions/Result'
+        403:
+          description: 유효하지 않은 JWT
+          schema:
+            $ref: '#/definitions/Result'
+  /book/{id}:
+    get:
+      tags:
+      - Challenge
+      summary: 책 상세
+      description: id에 해당하는 책 얻기
+      operationId: getBookDetail
+      consumes:
+      - application/json
+      - application/x-www-form-urlencoded
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        name: id
+        type: string
+        required: true
+        description: 해당 id
+      responses:
+        200:
+          description: 요청 성공
+          schema:
+            $ref: '#/definitions/BookDetail'
+        404:
+          description: 해당 책이 없음
+          schema:
+            $ref: '#/definitions/Result'
+  /trending/challenge:
+    get:
+      tags:
+      - Trending
+      summary: 현재 뜨고있는 도전들
+      description: 현재 뜨고있는 도전들 얻어오기
+      operationId: getTrendingChallnege
+      consumes:
+      - application/json
+      - application/x-www-form-urlencoded
+      produces:
+      - application/json
+      responses:
+        200:
+          description: 요청 성공
+          schema:
+            $ref: '#/definitions/Challenges'
+  /trending/book:
+    get:
+      tags:
+      - Trending
+      summary: 현재 뜨고있는 책들
+      description: 현재 뜨고있는 책들 얻어오기
+      operationId: getTrendingChallenge
+      consumes:
+      - application/json
+      - application/x-www-form-urlencoded
+      produces:
+      - application/json
+      responses:
+        200:
+          description: 요청 성공
+          schema:
+            $ref: '#/definitions/Books'
+  /qna:
+    get:
+      tags:
+      - QnA
+      summary: QnA들 얻어오기
+      description: QnA들 얻어오기
+      operationId: getQnas
+      consumes:
+      - application/json
+      - application/x-www-form-urlencoded
+      produces:
+      - application/json
+      responses:
+        200:
+          description: 요청 성공
+          schema:
+            $ref: '#/definitions/Qnas'
+    post:
+      tags:
+      - QnA
+      summary: QnA 작성
+      description: QnA 작성하기
+      operationId: writeQna
+      consumes:
+      - application/json
+      - application/x-www-form-urlencoded
+      produces:
+      - application/json
+      parameters:
+      - in: header
+        name: X-Access-Token
+        required: true
+        type: string
+        description: JWT
+      - in: formData
+        name: title
+        required: true
+        type: string
+        description: 질문 제목
+      - in: formData
+        name: tags
+        required: true
+        type: string
+        description: 태그들
+      - in: formData
+        name: content
+        required: true
+        type: string
+        description: 질문 내용
+      responses:
+        201:
+          description: 작성 성공
+          schema:
+            $ref: '#/definitions/Result'
+        403:
+          description: 유효하지 않은 JWT
+          schema:
+            $ref: '#/definitions/Result'
+  /qna/{id}:
+    get:
+      tags:
+      - QnA
+      summary: id의 QnA 얻어오기
+      description: 해당 id의 QnA 얻어오기
+      operationId: getSpecificQna
+      consumes:
+      - application/json
+      - application/x-www-form-urlencoded
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        name: id
+        type: string
+        required: true
+        description: QnA id
+      responses:
+        200:
+          description: 요청 성공
+          schema:
+            $ref: '#/definitions/QnaDetail'
+    post:
+      tags:
+      - QnA
+      summary: id의 QnA에 댓글 달기
+      description: 해당 id에 댓글 달기
+      operationId: writeComment
+      consumes:
+      - application/json
+      - application/x-www-form-urlencoded
+      produces:
+      - application/json
+      parameters:
+      - in: header
+        name: JWT
+        description: JWT
+        required: true
+        type: string
+      - in: path
+        name: id
+        description: QnA id
+        required: true
+        type: string
+      responses:
+        201:
+          description: 작성 성공
+          schema:
+            $ref: '#/definitions/Result'
+        403:
+          description: 유효하지 않은 JWT
+          schema:
+            $ref: '#/definitions/Result'
+    put:
+      tags:
+      - QnA
+      summary: id의 QnA 수정
+      description: 해당 id의 QnA 수정하기
+      operationId: modifySpecificQna
+      consumes:
+      - application/json
+      - application/x-www-form-urlencoded
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        name: id
+        type: string
+        required: true
+        description: QnA id
+      responses:
+        200:
+          description: 요청 성공
+          schema:
+            $ref: '#/definitions/Result'
+  /serach:
+    get:
+      tags:
+      - Search
+      summary: 검색
+      description: 주어진 쿼리로 검색
+      operationId: search
+      consumes:
+      - application/json
+      - apllication/x-www-form-urlencoded
+      produces:
+      - application/json
+      parameters:
+      - in: query
+        name: query
+        type: string
+        description: 검색할 내용
+        required: true
+      responses:
+        200:
+          description: 요청 성공
+          schema:
+            $ref: '#/definitions/Search'
+definitions:
+  Result:
+    type: object
+    properties:
+      result:
+        type: string
+  LoginResult:
+    type: object
+    properties:
+      jwt:
+        type: string
+  ProfileResult:
+    type: object
+    properties:
+      name:
+        type: string
+      point:
+        type: integer
+      tags:
+        type: string
+  MainChallengeCard:
+    type: object
+    properties:
+      pictureUrl:
+        type: string
+      name:
+        type: string
+      tags:
+        type: array
+        items:
+          type: string
+      isPressed:
+        type: boolean
+  MainQnaCard:
+    type: object
+    properties:
+      name:
+        type: string
+      tags:
+        type: array
+        items:
+          type: string
+      answerCount:
+        type: integer
+  Main:
+    type: object
+    properties:
+      result:
+        type: string
+      trending:
+        type: array
+        items:
+          $ref: '#/definitions/MainChallengeCard'
+      challenge:
+        type: array
+        items:
+          $ref: '#/definitions/MainChallengeCard'
+      qna:
+        type: array
+        items:
+          $ref: '#/definitions/MainQnaCard'
+  Items:
+    type: object
+    properties:
+      result:
+        type: string
+      skins:
+        type: array
+        items:
+          type: object
+          properties:
+            picture:
+              type: string
+            name:
+              type: string
+      medals:
+        type: array
+        items:
+          type: object
+          properties:
+            picture:
+              type: string
+            name:
+              type: string
+  Challenges:
+    type: array
+    items:
+      type: object
+      properties:
+        id:
+          type: string
+        pictureUrl:
+          type: string
+        name:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+        achievementRate:
+          type: number
+        authorPictureUrl:
+          type: string
+        author:
+          type: string
+        isPressed:
+          type: boolean
+  ChallengeDetail:
+    type: object
+    properties: 
+      result:
+        type: string
+      id:
+        type: string
+      isMine:
+        type: boolean
+      day:
+        type: number
+      diary:
+        type: array
+        items: 
+          type: object
+          properties:
+            title:
+              type: string
+            content:
+              type: string
+            todo:
+              type: array
+              items:
+                type: string
+  ChallengeInfo:
+    type: object
+    properties:
+      title:
+        type: string
+      description:
+        type: string
+      tags:
+        type: string
+      authorPictureUrl:
+        type: string
+      author:
+        type: string
+  Books:
+    type: array
+    items:
+      type: object
+      properties:
+        id:
+          type: string
+        pictureUrl:
+          type: string
+        name:
+          type: string
+        author:
+          type: string
+        achievementRate:
+          type: number
+        date:
+          type: string
+  BookDetail:
+    type: object
+    properties:
+      result:
+        type: string
+      pictureUrl:
+        type: string
+      author:
+        type: string
+      achievementRate:
+        type: string
+      completeDate:
+        type: string
+      content:
+        type: string
+  Qnas:
+    type: array
+    items:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        tags:
+          type: string
+        authorPicutreUrl:
+          type: string
+        author:
+          type: string
+        answerCount:
+          type: integer
+  QnaDetail:
+    type: object
+    properties:
+      result:
+        type: string
+      title:
+        type: string
+      tags:
+        type: string
+      content:
+        type: string
+      authorPictureUrl:
+        type: string
+      author:
+        type: string
+      answers:
+        type: array
+        items:
+          type: object
+          properties:
+            authorPcitureUrl:
+              type: string
+            author:
+              type: string
+            content:
+              type: string
+  Search:
+    type: object
+    properties:
+      result:
+        type: string
+      challenges:
+        $ref: '#/definitions/Challenges'
+      qnas:
+        $ref: '#/definitions/Qnas'

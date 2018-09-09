@@ -1,6 +1,7 @@
 const express = require('express');
-const router = express.Router();
 const ctrl = require('./qna.ctrl');
+
+const router = express.Router();
 
 router.get('/', ctrl.getQnas);
 router.post('/', ctrl.writeQna);
