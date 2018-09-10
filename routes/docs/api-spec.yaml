@@ -740,6 +740,10 @@ paths:
           description: 요청 성공
           schema:
             $ref: '#/definitions/QnaDetail'
+        404:
+          description: 존재하지 않는 QnA
+          schema:
+            $ref: '#/definitions/Result'
     post:
       tags:
       - QnA
@@ -771,6 +775,10 @@ paths:
           description: 유효하지 않은 JWT
           schema:
             $ref: '#/definitions/Result'
+        404:
+          description: 존재하지 않는 QnA
+          schema:
+            $ref: '#/definitions/Result'
     put:
       tags:
       - QnA
@@ -788,9 +796,30 @@ paths:
         type: string
         required: true
         description: QnA id
+      - in: header
+        name: X-Access-Token
+        type: string
+        required: true
+        description: JWT
+      - in: formData
+        name: title
+        type: string
+        description: 질문 제목
+      - in: formData
+        name: tags
+        type: string
+        description: 태그들
+      - in: formData
+        name: content
+        type: string
+        description: 질문 내용
       responses:
         200:
           description: 요청 성공
+          schema:
+            $ref: '#/definitions/Result'
+        404:
+          description: 존재하지 않는 QnA
           schema:
             $ref: '#/definitions/Result'
   /serach:
