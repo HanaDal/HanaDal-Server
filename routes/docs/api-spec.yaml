@@ -593,7 +593,7 @@ paths:
         200:
           description: 요청 성공
           schema:
-            $ref: '#/definitions/Result'
+            $ref: '#/definitions/Books'
         403:
           description: 유효하지 않은 JWT
           schema:
