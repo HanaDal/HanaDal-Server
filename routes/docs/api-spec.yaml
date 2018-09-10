@@ -39,6 +39,14 @@ paths:
         type: string
         required: true
         description: 해당 유저의 id
+      - in: formData
+        name: userName
+        type: string
+        description: 해당 유저의 닉네임
+      - in: formData
+        name: userTags
+        type: string
+        description: 해당 유저의 관심 태그
       responses:
         100:
           description: 회원가입 정보가 필요함
@@ -65,7 +73,7 @@ paths:
         in: header
         type: string
         required: true
-        description: JWt
+        description: JWT
       responses:
         200:
           description: 요청 성공
@@ -446,6 +454,11 @@ paths:
       description: 해당 id에 해당하는 도전의 의견 작성하기
       operationId: writeCommentAtChallenge
       parameters:
+      - in: header
+        name: X-Access-Token
+        description: JWT
+        required: true
+        type: string
       - in: path
         name: id
         description: 해당 도전의 id
