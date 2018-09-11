@@ -280,6 +280,10 @@ paths:
           description: 요청 성공
           schema:
             $ref: '#/definitions/Items'
+        403:
+          description: 유효하지 않은 JWT
+          schema:
+            $ref: '#/definitions/Result'
   /challenge:
     get:
       tags:
@@ -325,7 +329,7 @@ paths:
         required: true
         description: JWT
       - in: formData
-        name: name
+        name: title
         type: string
         required: true
         description: 도전 이름
@@ -394,6 +398,7 @@ paths:
           description: 해당 도전이 없음
           schema:
             $ref: '#/definitions/Result'
+  /challenge/{id}/diary/{day}:
     post:
       tags:
       - Challenge
@@ -416,6 +421,21 @@ paths:
         type: string
         required: true
         description: 해당 도전 id
+      - in: path
+        name: day
+        type: string
+        required: true
+        description: 해당 날짜
+      - in: formData
+        name: title
+        type: string
+        description: 제목
+        required: true
+      - in: formData
+        name: content
+        type: string
+        description: 내용
+        required: true
       responses:
         201:
           description: 요청 성공
@@ -427,6 +447,43 @@ paths:
             $ref: '#/definitions/Result'
         404:
           description: 해당 도전이 없음
+          schema:
+            $ref: '#/definitions/Result'
+  /challenge/{id}/todo/{day}:
+    post:
+      tags:
+      - Challenge
+      summary: Todo 작성
+      description: 해당 id의 day에 해당하는 Todo 작성
+      operationId: getChallengeTodo
+      consumes:
+      - application/json
+      - application/x-www-form-urlencoded
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        name: id
+        description: 해당 도전 id
+        type: string
+        required: true
+      - in: path
+        name: day
+        description: 해당 날짜
+        type: string
+        required: true
+      - in: formData
+        name: content
+        description: todo
+        type: string
+        required: true
+      responses:
+        201:
+          description: 요청 성공
+          schema:
+            $ref: '#/definitions/Result'
+        404:
+          description: id에 해당하는 도전이
           schema:
             $ref: '#/definitions/Result'
   /challenge/{id}/comment:
@@ -464,9 +521,23 @@ paths:
         description: 해당 도전의 id
         required: true
         type: string
+      - in: formData
+        name: title
+        required: true
+        type: string
+        description: 내용
+      - in: formData
+        name: content
+        required: true
+        type: string
+        description: 내용
       responses:
         201:
           description: 작성 성공
+          schema:
+            $ref: '#/definitions/Result'
+        403:
+          description: 유효하지 않은 JWT
           schema:
             $ref: '#/definitions/Result'
         404:
@@ -522,6 +593,18 @@ paths:
         type: string
         required: true
         description: 해당 도전의 id
+      - in: formData
+        name: title
+        type: string
+        description: 제목
+      - in: formData
+        name: description
+        type: string
+        description: 설명
+      - in: formData
+        name: tags
+        type: string
+        description: 태그들 (ex.운동,건강,기타,등등)
       responses:
         200:
           description: 요청 성공
@@ -757,7 +840,7 @@ paths:
       - application/json
       parameters:
       - in: header
-        name: JWT
+        name: X-Access-Token
         description: JWT
         required: true
         type: string
@@ -766,6 +849,11 @@ paths:
         description: QnA id
         required: true
         type: string
+      - in: formData
+        name: content
+        type: string
+        description: 내용
+        required: true
       responses:
         201:
           description: 작성 성공
@@ -791,16 +879,16 @@ paths:
       produces:
       - application/json
       parameters:
-      - in: path
-        name: id
-        type: string
-        required: true
-        description: QnA id
       - in: header
         name: X-Access-Token
         type: string
         required: true
         description: JWT
+      - in: path
+        name: id
+        type: string
+        required: true
+        description: QnA id
       - in: formData
         name: title
         type: string
@@ -816,6 +904,14 @@ paths:
       responses:
         200:
           description: 요청 성공
+          schema:
+            $ref: '#/definitions/Result'
+        401:
+          description: 수정할 권한이 없음 (자신의 도전이 아님)
+          schema:
+            $ref: '#/definitions/Result'
+        403:
+          description: 유효하지 않은 JWT
           schema:
             $ref: '#/definitions/Result'
         404:
@@ -972,10 +1068,10 @@ definitions:
               type: string
             content:
               type: string
-            todo:
-              type: array
-              items:
-                type: string
+      todo:
+        type: array
+        items:
+          type: string
   ChallengeInfo:
     type: object
     properties:
