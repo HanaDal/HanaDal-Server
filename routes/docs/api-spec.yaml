@@ -79,6 +79,10 @@ paths:
           description: 요청 성공
           schema:
             $ref: '#/definitions/ProfileResult'
+        403:
+          description: 유효하지 않은 JWT
+          schema:
+            $ref: '#/definitions/Result'
     put:
       tags:
       - User
@@ -110,7 +114,7 @@ paths:
           schema:
             $ref: '#/definitions/Result'
         403:
-          description: 유효하지 않은 Token
+          description: 유효하지 않은 JWT
           schema:
             $ref: '#/definitions/Result'
   /user/main:
