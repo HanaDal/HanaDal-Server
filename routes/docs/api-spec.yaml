@@ -35,16 +35,16 @@ paths:
       - application/json
       parameters:
       - in: formData
-        name: userId
+        name: id
         type: string
         required: true
         description: 해당 유저의 id
       - in: formData
-        name: userName
+        name: name
         type: string
         description: 해당 유저의 닉네임
       - in: formData
-        name: userTags
+        name: tags
         type: string
         description: 해당 유저의 관심 태그
       responses:
