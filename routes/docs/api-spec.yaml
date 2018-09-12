@@ -48,7 +48,7 @@ paths:
         type: string
         description: 해당 유저의 관심 태그
       responses:
-        100:
+        418:
           description: 회원가입 정보가 필요함
           schema:
             $ref: '#/definitions/Result'
@@ -497,6 +497,11 @@ paths:
       summary: 도전의 의견 확인하기
       description: 해당 id에 해당하는 도전의 의견 보기
       operationId: getCommentsAtChallnege
+      consumes:
+      - application/json
+      - application/x-www-form-urlencoded
+      produces:
+      - appllication/json
       parameters:
       - in: path
         name: id
@@ -514,6 +519,11 @@ paths:
       summary: 도전에 의견 달기
       description: 해당 id에 해당하는 도전의 의견 작성하기
       operationId: writeCommentAtChallenge
+      consumes:
+      - application/json
+      - application/x-www-form-urlencoded
+      produces:
+      - appllication/json  
       parameters:
       - in: header
         name: X-Access-Token
