@@ -88,7 +88,7 @@ paths:
       - User
       summary: 프로필 정보 변경
       description: JWT로 유저의 닉네임과 관심분야 선택
-      operationId: changeProfile
+      operationId: modifyProfile
       consumes:
       - application/json
       - application/x-www-form-urlencoded
@@ -103,10 +103,12 @@ paths:
       - name: profileName
         in: formData
         type: string
+        required: true
         description: 바꿀 닉네임
       - name: profileTags
         in: formData
         type: string
+        required: true
         description: 바꿀 태그
       responses:
         205:
@@ -415,11 +417,6 @@ paths:
       produces:
       - application/json
       parameters:
-      - in: header
-        name: X-Access-Token
-        type: string
-        required: true
-        description: JWT
       - in: path
         name: id
         type: string
@@ -443,10 +440,6 @@ paths:
       responses:
         201:
           description: 요청 성공
-          schema:
-            $ref: '#/definitions/Result'
-        403:
-          description: 유효하지 않은 JWT
           schema:
             $ref: '#/definitions/Result'
         404:
@@ -1221,7 +1214,7 @@ definitions:
           type: string
         tags:
           type: string
-        authorPicutreUrl:
+        authorPictureUrl:
           type: string
         author:
           type: string
