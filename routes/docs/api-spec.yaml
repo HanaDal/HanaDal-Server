@@ -256,7 +256,7 @@ paths:
         200:
           description: 요청 성공
           schema:
-            $ref: '#/definitions/Items'
+            $ref: '#/definitions/Result'
         403:
           description: 유효하지 않은 JWT
           schema:
@@ -1130,7 +1130,9 @@ definitions:
       completeDate:
         type: string
       content:
-        type: string
+        type: array
+        items:
+            type: string
   Qnas:
     type: array
     items:
