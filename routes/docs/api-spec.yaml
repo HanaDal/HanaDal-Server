@@ -558,6 +558,83 @@ paths:
           description: 해당 도전이 없음
           schema:
             $ref: '#/definitions/Result'
+  /challenge/{id}/comment/{no}:
+    get:
+        tags:
+        - Challenge
+        summary: no의 의견 확인
+        description: id에 해당하는 도전의 no번째 의견 얻기
+        operationId: getCommentDetail
+        consumes:
+          - application/json
+          - application/x-www-form-urlencoded
+        produces:
+        - application/json
+        parameters:
+        - in: path
+          name: id
+          type: string
+          required: true
+          description: 해당 도전의 id
+        - in: path
+          name: no
+          type: string
+          required: true
+          description: 해당 comment의 번호
+        responses:
+          200:
+            description: 요청 성공
+            schema: 
+              $ref: '#/definitions/QnaDetail'
+          404:
+            description: 존재하지 않는 도전이거나 comment
+            schema:
+              $ref: '#/definitions/Result'
+    post:
+      tags:
+      - Challenge
+      summary: 의견에 또다른 의견 달기
+      description: id에 해당하는 도전의 no번째 의견에 달기
+      operationId: writeCommentatChallengeComment
+      consumes:
+      - application/json
+      - application/x-www-form-urlencoded
+      produces:
+      - application/json
+      parameters:
+      - in: header
+        name: X-Access-Token
+        description: JWT
+        required: true
+        type: string
+      - in: path
+        name: id
+        description: 해당 도전의 id
+        required: true
+        type: string
+      - in: path
+        name: no
+        description: 해당 comment의 번호
+        required: true
+        type: string
+      - in: formData
+        name: content
+        type: string
+        description: 내용
+        required: true
+      responses:
+        201:
+          description: 작성 성공
+          schema:
+            $ref: '#/definitions/Result'
+        403:
+          description: 유효하지 않은 JWT
+          schema:
+            $ref: '#/definitions/Result'
+        404:
+          description: 존재하지 않는 Comment
+          schema:
+            $ref: '#/definitions/Result'
   /challenge/{id}/info:
     get:
       tags:
