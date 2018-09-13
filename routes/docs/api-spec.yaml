@@ -360,7 +360,7 @@ paths:
         required: true
         description: 태그들 (ex.운동,건강,기타,등등)
       responses:
-        200:
+        201:
           description: 요청 성공
           schema:
             $ref: '#/definitions/Result'
