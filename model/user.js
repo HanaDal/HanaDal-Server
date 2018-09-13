@@ -10,7 +10,7 @@ const User = new mongoose.Schema({
     skin: [String],
     badge: [String],
   },
-  cheering: [{ type: String, ref: 'challenges' }],
+  cheering: [{ type: mongoose.Schema.Types.ObjectId, ref: 'challenges' }],
 });
 
-module.exports = mongoose.model('User', User);
+module.exports = mongoose.model('user', User);

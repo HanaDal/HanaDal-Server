@@ -7,4 +7,4 @@ const Item = new mongoose.Schema([{
   category: String,
 }]);
 
-module.exports = mongoose.model('Item', Item);
+module.exports = mongoose.model('item', Item);
