@@ -29,8 +29,8 @@ paths:
       description: 페이스북 및 카카오 계정으로 로그인하기
       operationId: userLogin
       consumes:
-      - application/json
       - application/x-www-form-urlencoded
+      - application/json
       produces:
       - application/json
       parameters:
@@ -64,8 +64,8 @@ paths:
       description: JWT로 유저의 닉네임과 관심분야 얻기
       operationId: getProfile
       consumes:
-      - application/json
       - application/x-www-form-urlencoded
+      - application/json
       produces:
       - application/json
       parameters:
@@ -90,8 +90,8 @@ paths:
       description: JWT로 유저의 닉네임과 관심분야 선택
       operationId: modifyProfile
       consumes:
-      - application/json
       - application/x-www-form-urlencoded
+      - application/json
       produces:
       - application/json
       parameters:
@@ -127,8 +127,8 @@ paths:
       description: JWT로 메인에 들어갈 도전, 트렌딩 얻기
       operationId: getMain
       consumes: 
-      - application/json
       - application/x-www-form-urlencoded
+      - application/json
       produces: 
       - application/json
       parameters: 
@@ -155,8 +155,8 @@ paths:
       description: JWT로 공감한 편린들 확인하기
       operationId: getCheeringChallenge
       consumes:
-      - application/json
       - application/x-www-form-urlencoded
+      - application/json
       produces:
       - application/json
       parameters:
@@ -181,8 +181,8 @@ paths:
       description: JWT로 편린에 공감하기
       operationId: cheeringChallenge
       consumes:
-      - application/json
       - application/x-www-form-urlencoded
+      - application/json
       produces:
       - application/json
       parameters:
@@ -213,8 +213,8 @@ paths:
       description: JWT로 보유한 아이템 확인하기
       operationId: getItems
       consumes:
-      - application/json
       - application/x-www-form-urlencoded
+      - application/json
       produces:
       - application/json
       parameters:
@@ -239,8 +239,8 @@ paths:
       description: JWT로 아이템 구매하기
       operationId: buyItem
       consumes:
-      - application/json
       - application/x-www-form-urlencoded
+      - application/json
       produces:
       - application/json
       parameters:
@@ -271,8 +271,8 @@ paths:
       description: 상점에 필요한 정보들 확인
       operationId: getStore
       consumes:
-      - application/json
       - application/x-www-form-urlencoded
+      - application/json
       produces:
       - application/json
       parameters:
@@ -298,8 +298,8 @@ paths:
       description: JWT로 내 도전 조회하기
       operationId: getChallenges
       consumes:
-      - application/json
       - application/x-www-form-urlencoded
+      - application/json
       produces:
       - application/json
       parameters:
@@ -324,8 +324,8 @@ paths:
       description: JWT로 새 도전 만들기
       operationId: makeChallenge
       consumes:
-      - application/json
       - application/x-www-form-urlencoded
+      - application/json
       produces:
       - application/json
       parameters:
@@ -376,8 +376,8 @@ paths:
       description: 도전 상세하게 보기
       operationId: getChallengeDetail
       consumes:
-      - application/json
       - application/x-www-form-urlencoded
+      - application/json
       produces:
       - application/json
       parameters:
@@ -412,8 +412,8 @@ paths:
       description: 다이어리 작성하기
       operationId: postChallengeDiary
       consumes:
-      - application/json
       - application/x-www-form-urlencoded
+      - application/json
       produces:
       - application/json
       parameters:
@@ -454,8 +454,8 @@ paths:
       description: 해당 id의 day에 해당하는 Todo 작성
       operationId: getChallengeTodo
       consumes:
-      - application/json
       - application/x-www-form-urlencoded
+      - application/json
       produces:
       - application/json
       parameters:
@@ -491,8 +491,8 @@ paths:
       description: 해당 id에 해당하는 도전의 의견 보기
       operationId: getCommentsAtChallnege
       consumes:
-      - application/json
       - application/x-www-form-urlencoded
+      - application/json
       produces:
       - appllication/json
       parameters:
@@ -513,8 +513,8 @@ paths:
       description: 해당 id에 해당하는 도전의 의견 작성하기
       operationId: writeCommentAtChallenge
       consumes:
-      - application/json
       - application/x-www-form-urlencoded
+      - application/json
       produces:
       - appllication/json  
       parameters:
@@ -559,8 +559,8 @@ paths:
         description: id에 해당하는 도전의 no번째 의견 얻기
         operationId: getCommentDetail
         consumes:
-          - application/json
           - application/x-www-form-urlencoded
+          - application/json
         produces:
         - application/json
         parameters:
@@ -590,8 +590,8 @@ paths:
       description: id에 해당하는 도전의 no번째 의견에 달기
       operationId: writeCommentatChallengeComment
       consumes:
-      - application/json
       - application/x-www-form-urlencoded
+      - application/json
       produces:
       - application/json
       parameters:
@@ -636,8 +636,8 @@ paths:
       description: 도전에 대한 정보
       operationId: getChallengeInfo
       consumes:
-      - application/json
       - application/x-www-form-urlencoded
+      - application/json
       produces:
       - application/json
       parameters:
@@ -662,8 +662,8 @@ paths:
       description: 도전에 대한 정보 수정
       operationId: modifyChallnegeInfo
       consumes:
-      - application/json
       - application/x-www-form-urlencoded
+      - application/json
       produces:
       - application/json
       parameters:
@@ -710,8 +710,8 @@ paths:
       description: 도전 따라하기
       operationId: forkChallenge
       consumes:
-      - application/json
       - application/x-www-form-urlencoded
+      - application/json
       produces:
       - application/json
       parameters:
@@ -746,8 +746,8 @@ paths:
       description: JWT로 내 책 조회하기
       operationId: getBooks
       consumes:
-      - application/json
       - application/x-www-form-urlencoded
+      - application/json
       produces:
       - application/json
       parameters:
@@ -773,8 +773,8 @@ paths:
       description: id에 해당하는 책 얻기
       operationId: getBookDetail
       consumes:
-      - application/json
       - application/x-www-form-urlencoded
+      - application/json
       produces:
       - application/json
       parameters:
@@ -800,8 +800,8 @@ paths:
       description: 현재 뜨고있는 도전들 얻어오기
       operationId: getTrendingChallnege
       consumes:
-      - application/json
       - application/x-www-form-urlencoded
+      - application/json
       produces:
       - application/json
       responses:
@@ -817,8 +817,8 @@ paths:
       description: 현재 뜨고있는 책들 얻어오기
       operationId: getTrendingChallenge
       consumes:
-      - application/json
       - application/x-www-form-urlencoded
+      - application/json
       produces:
       - application/json
       responses:
@@ -834,8 +834,8 @@ paths:
       description: QnA들 얻어오기
       operationId: getQnas
       consumes:
-      - application/json
       - application/x-www-form-urlencoded
+      - application/json
       produces:
       - application/json
       responses:
@@ -850,8 +850,8 @@ paths:
       description: QnA 작성하기
       operationId: writeQna
       consumes:
-      - application/json
       - application/x-www-form-urlencoded
+      - application/json
       produces:
       - application/json
       parameters:
@@ -892,8 +892,8 @@ paths:
       description: 해당 id의 QnA 얻어오기
       operationId: getSpecificQna
       consumes:
-      - application/json
       - application/x-www-form-urlencoded
+      - application/json
       produces:
       - application/json
       parameters:
@@ -918,8 +918,8 @@ paths:
       description: 해당 id에 댓글 달기
       operationId: writeComment
       consumes:
-      - application/json
       - application/x-www-form-urlencoded
+      - application/json
       produces:
       - application/json
       parameters:
@@ -958,8 +958,8 @@ paths:
       description: 해당 id의 QnA 수정하기
       operationId: modifySpecificQna
       consumes:
-      - application/json
       - application/x-www-form-urlencoded
+      - application/json
       produces:
       - application/json
       parameters:
