@@ -5,13 +5,14 @@ const mongoose = require('mongoose');
 const app = express();
 
 mongoose.Promise = global.Promise;
-mongoose.connect(process.env.MONGODB_URI);
+mongoose.connect(process.env.MONGODB_URI)
+  .then(() => console.log('Connected to Mongo'))
+  .catch(err => console.log(err));
 
 app.set('PORT', process.env.PORT)
-    .set('jwt-secret', process.env.JWT_KEY)
-    .use(bodyParser.json())
-    .use(bodyParser.urlencoded({extended : true}))
-    .use('/api', require('./routes/index'))
-    .get('/', (req, res) => res.send('<h1>Hello, World!</h1>'));
+  .use(bodyParser.json())
+  .use(bodyParser.urlencoded({ extended: true }))
+  .use('/api', require('./routes/index'))
+  .get('/', (req, res) => res.send('<h1>Hello, World!</h1>'));
 
 module.exports = app;
