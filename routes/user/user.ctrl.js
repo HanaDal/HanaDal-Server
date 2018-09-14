@@ -14,14 +14,14 @@ const login = async function login(req, res) {
 
   if (user) res.status(200).json({ result: 'success', jwt: getJWT(user._id) });
   else if (name !== undefined && tags !== undefined) {
-    const newUser = new User();
-    newUser.id = id;
-    newUser.name = name;
-    newUser.picture = pictureUrl || 'https://www.somewhere.com';
-    newUser.tags = tags.split(',');
-    newUser.items.skin = [];
-    newUser.items.badge = [];
-    newUser.cheering = [];
+    const newUser = new User({
+      id,
+      name,
+      picture: pictureUrl || 'https://www.somewhere.com',
+      tags: tags.split(','),
+      items: [],
+      cheering: [],
+    });
     newUser.save()
       .then(u => res.status(200).json({ result: 'success', jwt: getJWT(u._id) }))
       .catch(() => res.status(500).json({ result: 'failure' }));
