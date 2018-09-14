@@ -1,16 +1,13 @@
 const mongoose = require('mongoose');
 
 const User = new mongoose.Schema({
-  _id: String,
+  id: String,
   name: String,
   picture: String,
   point: { type: Number, default: 0 },
   tags: [String],
-  items: {
-    skin: [String],
-    badge: [String],
-  },
-  cheering: [{ type: mongoose.Schema.Types.ObjectId, ref: 'challenges' }],
+  items: [{ type: mongoose.Schema.Types.ObjectId, ref: 'item' }],
+  cheering: [{ type: mongoose.Schema.Types.ObjectId, ref: 'challenge' }],
 });
 
 module.exports = mongoose.model('user', User);
