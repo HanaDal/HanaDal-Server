@@ -2,10 +2,10 @@ const mongoose = require('mongoose');
 
 const Book = new mongoose.Schema({
   title: String,
-  owner: { type: String, ref: 'users' },
+  author: { type: mongoose.Schema.Types.ObjectId, ref: 'users' },
   achievementRate: Number,
   completeDate: Date,
-  content: String,
+  content: [String],
 });
 
 module.exports = mongoose.model('book', Book);

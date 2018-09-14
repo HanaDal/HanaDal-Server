@@ -1,14 +1,15 @@
 const mongoose = require('mongoose');
 
 const Qna = new mongoose.Schema({
-  tags: [String],
   title: String,
-  writer: { type: String, ref: 'users' },
+  tags: [String],
+  author: { type: mongoose.Schema.Types.ObjectId, ref: 'user' },
   content: String,
   comment: [{
-    writer: { type: String, ref: 'users' },
+    author: { type: mongoose.Schema.Types.ObjectId, ref: 'user' },
     content: String,
   }],
+  answerCount: { type: Number, default: 0 },
 });
 
 module.exports = mongoose.model('qna', Qna);
