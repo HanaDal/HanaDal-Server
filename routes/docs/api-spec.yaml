@@ -1026,6 +1026,15 @@ paths:
           schema:
             $ref: '#/definitions/Search'
 definitions:
+  Author:
+    type: object
+    properties:
+      _id:
+        type: string
+      name:
+        type: string
+      picture:
+        type: string
   Result:
     type: object
     properties:
@@ -1130,10 +1139,8 @@ definitions:
             type: string
         achievementRate:
           type: number
-        authorPictureUrl:
-          type: string
         author:
-          type: string
+          $ref: '#/definitions/Author'
         isPressed:
           type: boolean
   ChallengeDetail:
@@ -1169,10 +1176,9 @@ definitions:
         type: string
       tags:
         type: string
-      authorPictureUrl:
-        type: string
       author:
-        type: string
+        $ref: '#/definitions/Author'
+        
   Books:
     type: array
     items:
@@ -1185,7 +1191,7 @@ definitions:
         name:
           type: string
         author:
-          type: string
+          $ref: '#/definitions/Author'
         achievementRate:
           type: number
         date:
@@ -1198,7 +1204,7 @@ definitions:
       pictureUrl:
         type: string
       author:
-        type: string
+        $ref: '#/definitions/Author'
       achievementRate:
         type: string
       completeDate:
@@ -1218,10 +1224,8 @@ definitions:
           type: string
         tags:
           type: string
-        authorPictureUrl:
-          type: string
         author:
-          type: string
+          $ref: '#/definitions/Author'
         answerCount:
           type: integer
   QnaDetail:
@@ -1235,19 +1239,15 @@ definitions:
         type: string
       content:
         type: string
-      authorPictureUrl:
-        type: string
       author:
-        type: string
+        $ref: '#/definitions/Author'
       answers:
         type: array
         items:
           type: object
           properties:
-            authorPictureUrl:
-              type: string
             author:
-              type: string
+              $ref: '#/definitions/Author'
             content:
               type: string
   Search:
