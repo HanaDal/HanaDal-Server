@@ -3,9 +3,11 @@ const ctrl = require('./qna.ctrl');
 
 const router = express.Router();
 
-router.get('/', ctrl.getQnas);
-router.post('/', ctrl.writeQna);
-router.delete('/:id', ctrl.deleteQna);
-router.get('/:id', ctrl.getQnaDetail);
+router.get('/', ctrl.getQnas)
+  .post('/', ctrl.writeQna)
+  .get('/:id', ctrl.getQnaDetail)
+  .post('/:id', ctrl.writeQnaComment)
+//  .delete('/:id', ctrl.deleteQna)
+  .put('/:id', ctrl.modifyQna);
 
 module.exports = router;
