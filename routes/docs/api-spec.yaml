@@ -1096,6 +1096,8 @@ definitions:
         items:
           type: object
           properties:
+            _id:
+                type: string
             picture:
               type: string
             name:
@@ -1105,6 +1107,8 @@ definitions:
         items:
           type: object
           properties:
+            _id:
+                type: string
             picture:
               type: string
             name:
@@ -1114,7 +1118,7 @@ definitions:
     items:
       type: object
       properties:
-        id:
+        _id:
           type: string
         pictureUrl:
           type: string
@@ -1137,7 +1141,7 @@ definitions:
     properties: 
       result:
         type: string
-      id:
+      _id:
         type: string
       isMine:
         type: boolean
@@ -1174,7 +1178,7 @@ definitions:
     items:
       type: object
       properties:
-        id:
+        _id:
           type: string
         pictureUrl:
           type: string
@@ -1208,7 +1212,7 @@ definitions:
     items:
       type: object
       properties:
-        id:
+        _id:
           type: string
         title:
           type: string
@@ -1240,7 +1244,7 @@ definitions:
         items:
           type: object
           properties:
-            authorPcitureUrl:
+            authorPictureUrl:
               type: string
             author:
               type: string
