@@ -1,24 +1,19 @@
 # HanaDal - Server
 
+## 개요
+대덕소프트웨어마이스터고등학교에서 팀 프로젝트로 진행된 앱의 서버입니다.
+
 ## Using
 - Express.js
 - Swagger
 - MongoDB
-- Redis(Not Sure)
-- Heroku or AWS
+- Heroku
 
 ## Modules
 - Morgan
 - Mocha, should, supertest
 - Express
 - Mongoose
-- Passport(Not Sure)
 - json-web-token
 - eslint
 - swagger-ui-dist
-- Cluster 모듈 이용해보기
-
-## TODO
-- 설계
-    - 책 컬렉션
-    - 트렌딩 컬렉션
