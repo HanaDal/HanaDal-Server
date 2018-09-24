@@ -1198,12 +1198,14 @@ definitions:
           $ref: '#/definitions/Author'
         achievementRate:
           type: number
-        date:
+        completeDate:
           type: string
   BookDetail:
     type: object
     properties:
       result:
+        type: string
+      name:
         type: string
       pictureUrl:
         type: string
