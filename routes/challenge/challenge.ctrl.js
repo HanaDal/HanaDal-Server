@@ -5,7 +5,7 @@ const Book = require('../../model/book');
 const getChallengeList = async function getChallengeList(req, res) {
   try {
     const payload = jwt.verify(req.get('X-Access-Token'), process.env.JWT_KEY);
-    const challenges = await Challenge.find({ owner: payload.id })
+    const challenges = await Challenge.find({ author: payload.id })
       .select('_id author tags pictureUrl name achievementRate').populate('author');
     res.status(200).json(challenges);
   } catch (e) {
