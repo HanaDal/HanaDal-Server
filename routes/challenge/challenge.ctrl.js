@@ -6,13 +6,14 @@ const getChallengeList = async function getChallengeList(req, res) {
   try {
     const payload = jwt.verify(req.get('X-Access-Token'), process.env.JWT_KEY);
     const challenges = await Challenge.find({ author: payload.id })
-      /* .populate('author') */.select('_id tags pictureUrl name achievementRate' /* author.name author.picture author.cheering */);
+      .populate('author', 'name picture').select('_id tags pictureUrl name achievementRate');
     res.status(200).json(challenges);
   } catch (e) {
     res.status(403).json({ result: 'failure' });
   }
 };
 
+// TODO: 사진 추가하기
 const makeChallenge = function makeChallenge(req, res) {
   try {
     const {
@@ -35,16 +36,16 @@ const makeChallenge = function makeChallenge(req, res) {
   }
 };
 
-const getChallengeDetail = function getChallengeDetailWithJWT(req, res) {
+const getChallengeDetail = async function getChallengeDetailWithJWT(req, res) {
   try {
     const { id } = req.params;
     const payload = jwt.verify(req.get('X-Access-Token'), process.env.JWT_KEY);
-    const challenge = Challenge.findById(id);
+    const challenge = await Challenge.findById(id);
     if (challenge === null) return res.status(404).json({ result: 'failure' });
     return res.status(200).json({
       result: 'success',
       _id: challenge._id,
-      isMine: challenge.author === payload.id,
+      isMine: challenge.author.toString() === payload.id,
       day: challenge.todo.length,
       diary: challenge.diary,
       todo: challenge.todo,
@@ -70,18 +71,18 @@ const postChallengeTodo = async function postChallengeDiaryWithId(req, res) {
   const { id, day } = req.params;
   const { content } = req.body;
 
-  const challenge = await Challenge.findByIdAndUpdate(id, { $set: { [`todo.${day}`]: { content } } });
+  const challenge = await Challenge.findByIdAndUpdate(id, { $set: { [`todo.${day}`]: content } });
   if (challenge === null) return res.status(404).json({ result: 'failure' });
   return res.status(201).json({ result: 'success' });
 };
 
-const getChallengeComment = function getChallengeCommentWithId(req, res) {
+const getChallengeComment = async function getChallengeCommentWithId(req, res) {
   const { id } = req.params;
-  const comments = Challenge.findById(id).select('issue.author issue.title issue.comment').populate('issue.author');
-  comments.forEach((e) => {
+  const comments = await Challenge.findById(id).select('issue.author issue.title issue.comment').populate('issue.author');
+  comments.issue.forEach((e) => {
     e.comment = e.comment.length;
   });
-  res.status(200).json(comments);
+  res.status(200).json(comments.issue);
 };
 
 const postChallengeComment = async function postChallengeCommentWithJWT(req, res) {
@@ -104,22 +105,22 @@ const postChallengeComment = async function postChallengeCommentWithJWT(req, res
   }
 };
 
-// TODO: tags가 없어요, comment가 comment에요 안드로이드랑 맞춰야 해요
+// FIXME: tags가 없어요, comment가 comment에요 안드로이드랑 맞춰야 해요, 보류
 const getCommentDetail = async function getCommentDetailWithId(req, res) {
   const { id, no } = req.params;
 
-  // FIXME: array에서 특정 인덱스만 찾는법??
-  // const challenge = await Challenge.find({ _id: id, 'issue.$': no }).populate('author comment.author');
+  const challenge = await Challenge.findById(id, 'issue').populate(`issue.${no}.author issue.${no}.comment.author`);
   if (challenge === null) return res.status(404).json({ result: 'failure' });
+  console.log(challenge.issue[no]);
   return res.status(200).json({ result: 'success' });
 };
 
+// FIXME: array에서 특정 인덱스의 필드만 수정하는법??
 const postCommentAtChallenegeComment = async function postCommentAtChallenegeCommentWithJWT(req, res) {
   try {
     const { id, no } = req.params;
     const { content } = req.body;
     const payload = jwt.verify(req.get('X-Access-Token'), process.env.JWT_KEY);
-    // FIXME: array에서 특정 인덱스의 필드만 수정하는법??
     // const challenge = await Challenge.findOneAndUpdate({ _id: id, 'issue.$': no }, { $push: });
     return res.status(201).json({ result: 'success' });
   } catch (e) {
@@ -129,11 +130,12 @@ const postCommentAtChallenegeComment = async function postCommentAtChallenegeCom
 
 const getChallengeInfo = async function getChallengeInfoWithId(req, res) {
   const { id } = req.params;
-  const challenge = await Challenge.findById(id).select('name description tags author').populate('author');
+  const challenge = await Challenge.findById(id).select('name description tags author').populate('author', 'picture name');
   if (challenge === null) return res.status(404).json({ result: 'failure' });
   return res.status(200).json(challenge);
 };
 
+// TODO: 이 아래로 테스트 해보기
 const modifyChallengeInfo = async function modifyChallengeInfoWithJWT(req, res) {
   try {
     const { id } = req.params;
@@ -175,7 +177,7 @@ const forkChallenge = async function forkChallenge(req, res) {
 const getBooks = async function getBooksWithJWT(req, res) {
   try {
     const payload = jwt.verify(req.get('X-Access-Token'), process.env.JWT_KEY);
-    const books = await Book.find({ author: payload.id }).select('-content').populate('author');
+    const books = await Book.find({ author: payload.id }).select('-content').populate('author', 'name');
     res.status(200).json(books);
   } catch (e) {
     res.status(403).json({ result: 'failure' });
@@ -184,7 +186,7 @@ const getBooks = async function getBooksWithJWT(req, res) {
 
 const getBookDetail = async function getBookDetailWithId(req, res) {
   const { id } = req.params;
-  const book = await Book.findById(id).select('-_id').populate('author');
+  const book = await Book.findById(id).select('-_id').populate('author', 'name');
   res.status(200).json(book);
 };
 
