@@ -46,7 +46,10 @@ const writeQnaComment = function writeQnaComment(req, res) {
   try {
     const payload = jwt.verify(req.get('X-Access-Token'), process.env.JWT_KEY);
     QnA.findByIdAndUpdate(req.params.id,
-      { $push: { comment: { author: payload.id, content: req.body.content } } })
+      {
+        $push: { comment: { author: payload.id, content: req.body.content } },
+        $inc: { answerCount: 1 },
+      })
       .then(() => res.status(201).json({ result: 'success' }))
       .catch(() => res.status(500).json({ result: 'failure' }));
   } catch (e) {
