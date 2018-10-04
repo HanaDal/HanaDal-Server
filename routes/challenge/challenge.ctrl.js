@@ -59,7 +59,7 @@ const postChallengeDiary = async function postChallengeDiaryWithJWT(req, res) {
   try {
     const { id, day } = req.params;
     const { title, content } = req.body;
-    const challenge = await Challenge.findByIdAndUpdate(id, { $set: { [`diary.${day}`]: { title, content }, day: ++day } });
+    const challenge = await Challenge.findByIdAndUpdate(id, { $set: { [`diary.${day}`]: { title, content } } });
     if (challenge === null) return res.status(404).json({ result: 'failure' });
     return res.status(200).json({ result: 'success' });
   } catch (e) {
