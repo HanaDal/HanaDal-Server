@@ -1002,6 +1002,54 @@ paths:
           description: 존재하지 않는 QnA
           schema:
             $ref: '#/definitions/Result'
+  /qna/my-question:
+    get:
+      tags:
+      - QnA
+      summary: 내 질문 얻기
+      description: JWT로 내 질문 얻기
+      operationId: getMyQuestion
+      produces:
+      - application/json
+      parameters:
+      - in: header
+        name: X-Access-Token
+        type: string
+        required: true
+        description: JWT
+      responses:
+        200:
+          description: 요청 성공
+          schema:
+            $ref: '#/definitions/Qnas'
+        403:
+          description: 유효하지 않은 JWt
+          schema:
+            $ref: '#/definitions/Result'
+  /qna/my-answer:
+    get:
+      tags:
+      - QnA
+      summary: 내 답변 얻기
+      description: JWT로 내 답변 얻기
+      operationId: getMyAnswer
+      produces:
+      - application/json
+      parameters:
+      - in: header
+        name: X-Access-Token
+        type: string
+        required: true
+        description: JWT
+      responses:
+        200:
+          description: 요청 성공
+          schema:
+            $ref: '#/definitions/Qnas'
+        403:
+          description: 유효하지 않은 JWt
+          schema:
+            $ref: '#/definitions/Result'
   /serach:
     get:
       tags:

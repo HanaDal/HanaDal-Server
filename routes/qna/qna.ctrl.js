@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const QnA = require('../../model/qna');
 
 const getQnas = function getQnas(req, res) {
-  QnA.find().select('-content -comment').populate('author', 'name picture')
+  QnA.find({}, '-content -comment').populate('author', 'name picture')
     .then(q => res.status(200).json(q))
     .catch(e => res.status(500).json({ result: 'failure', e }));
 };
@@ -76,10 +76,37 @@ const modifyQna = function modifyQna(req, res) {
   }
 };
 
+const getMyQuestion = async function getMyQuestionWithJWT(req, res) {
+  try {
+    const payload = jwt.verify(req.get('X-Access-Token'), process.env.JWT_KEY);
+    const questions = await QnA
+      .find({ author: payload.id }, '-content -comment')
+      .populate('author', 'name picture');
+    res.status(200).json(questions);
+  } catch (e) {
+    res.status(403).json({ result: 'failure' });
+  }
+};
 
-exports.getQnas = getQnas;
-exports.writeQna = writeQna;
-exports.deleteQna = deleteQna;
-exports.getQnaDetail = getQnaDetail;
-exports.writeQnaComment = writeQnaComment;
-exports.modifyQna = modifyQna;
+const getMyAnswer = async function getMyAnswerWithJWT(req, res) {
+  try {
+    const payload = jwt.verify(req.get('X-Access-Token'), process.env.JWT_KEY);
+    const questions = await QnA
+      .find({ comment: { $elemMatch: { author: payload.id } } }, '-content -comment')
+      .populate('author', 'name picture');
+    res.status(200).json(questions);
+  } catch (e) {
+    res.status(403).json({ result: 'failure' });
+  }
+};
+
+module.exports = {
+  getQnas,
+  writeQna,
+  deleteQna,
+  getQnaDetail,
+  writeQnaComment,
+  modifyQna,
+  getMyQuestion,
+  getMyAnswer,
+};
