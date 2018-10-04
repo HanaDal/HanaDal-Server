@@ -177,10 +177,10 @@ const forkChallenge = async function forkChallenge(req, res) {
 const getBooks = async function getBooksWithJWT(req, res) {
   try {
     const payload = jwt.verify(req.get('X-Access-Token'), process.env.JWT_KEY);
-    const books = await Book.find({ author: payload.id }).select('-content').populate('author', 'name');
+    const books = await Book.find({ author: payload.id }, '-content').populate('author', 'name');
     res.status(200).json(books);
   } catch (e) {
-    res.status(403).json({ result: 'failure' });
+    res.status(403).json({ result: 'failure', e });
   }
 };
 
