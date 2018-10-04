@@ -5,8 +5,8 @@ const Book = require('../../model/book');
 const getChallengeList = async function getChallengeList(req, res) {
   try {
     const payload = jwt.verify(req.get('X-Access-Token'), process.env.JWT_KEY);
-    const challenges = await Challenge.find({ author: payload.id })
-      .populate('author', 'name picture').select('_id tags pictureUrl name achievementRate');
+    const challenges = await Challenge.find({ author: payload.id }, '_id tags pictureUrl name achievementRate')
+      .populate('author', 'name picture');
     res.status(200).json(challenges);
   } catch (e) {
     res.status(403).json({ result: 'failure' });
