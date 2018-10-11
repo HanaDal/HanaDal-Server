@@ -135,7 +135,6 @@ const getChallengeInfo = async function getChallengeInfoWithId(req, res) {
   return res.status(200).json(challenge);
 };
 
-// TODO: 이 아래로 테스트 해보기
 const modifyChallengeInfo = async function modifyChallengeInfoWithJWT(req, res) {
   try {
     const { id } = req.params;
@@ -165,7 +164,7 @@ const forkChallenge = async function forkChallenge(req, res) {
       description: challenge.description,
       isPublic: challenge.isPublic,
       isStrict: challenge.isStrict,
-      tags: challenge.toString(),
+      tags: challenge.tags,
     });
     newChallenge.save();
     return res.status(201).json({ result: 'success' });
