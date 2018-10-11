@@ -130,7 +130,7 @@ const postCommentAtChallenegeComment = async function postCommentAtChallenegeCom
 
 const getChallengeInfo = async function getChallengeInfoWithId(req, res) {
   const { id } = req.params;
-  const challenge = await Challenge.findById(id).select('name description tags author').populate('author', 'picture name');
+  const challenge = await Challenge.findById(id).select('name pictureUrl description tags author').populate('author', 'picture name');
   if (challenge === null) return res.status(404).json({ result: 'failure' });
   return res.status(200).json(challenge);
 };
