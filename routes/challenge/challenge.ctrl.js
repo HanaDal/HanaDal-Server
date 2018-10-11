@@ -162,6 +162,7 @@ const forkChallenge = async function forkChallenge(req, res) {
       author: payload.id,
       name: challenge.name,
       description: challenge.description,
+      todo: challenge.todo,
       isPublic: challenge.isPublic,
       isStrict: challenge.isStrict,
       tags: challenge.tags,
