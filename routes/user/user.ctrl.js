@@ -86,7 +86,7 @@ const cheering = function cheering(req, res) {
   try {
     const { id } = req.body;
     const payload = jwt.verify(req.get('X-Access-Token'), process.env.JWT_KEY);
-    User.findByIdAndUpdate(payload.id, { $push: { cheering: id } })
+    User.findByIdAndUpdate(payload.id, { $addToSet: { cheering: id } })
       .then(() => res.status(201).json({ result: 'success' }))
       .catch(() => res.status(500).json({ result: 'failure' }));
   } catch (e) {
