@@ -1224,6 +1224,8 @@ definitions:
         type: string
       description:
         type: string
+      pictureUrl:
+        type: string
       tags:
         type: array
         items:
