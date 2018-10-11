@@ -62,14 +62,22 @@ const modifyProfile = function modifyProfileWithJwt(req, res) {
 };
 
 
-const getCheering = function getCheering(req, res) {
+const getCheering = async function getCheering(req, res) {
   try {
     const payload = jwt.verify(req.get('X-Access-Token'), process.env.JWT_KEY);
-    User.findById(payload.id).populate('cheering').exec()
-      .then(u => res.status(200).json(u.cheering))
-      .catch(e => res.status(500).json({ result: 'failure', e }));
+    const cheering = await User.findById(payload.id, 'cheering')
+      .populate({
+        path: 'cheering',
+        select: '_id pictureUrl achievementRate tags name author',
+        populate: {
+          path: 'author',
+          select: 'name picture',
+        },
+      });
+    cheering.cheering.forEach((e) => { e.isPressed = true; });
+    res.status(200).json(cheering.cheering);
   } catch (e) {
-    res.status(403).json({ result: 'failure' });
+    res.status(403).json({ result: 'failure', e });
   }
 };
 
