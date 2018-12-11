@@ -17,7 +17,7 @@ const login = async function login(req, res) {
     const newUser = new User({
       id,
       name,
-      picture: pictureUrl || 'https://www.somewhere.com',
+      picture: pictureUrl || null,
       tags: tags.split(','),
       items: [],
       cheering: [],
