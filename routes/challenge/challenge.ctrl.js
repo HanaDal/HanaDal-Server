@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const s3 = require('aws-sdk/clients/s3');
 const Challenge = require('../../model/challenge');
 const Book = require('../../model/book');
 
@@ -14,14 +15,17 @@ const getChallengeList = async function getChallengeList(req, res) {
 };
 
 // TODO: 사진 추가하기
-const makeChallenge = function makeChallenge(req, res) {
+const makeChallenge = async function makeChallenge(req, res) {
   try {
     const {
       title, description, isPublic, isStrict, tags,
     } = req.body;
     const payload = jwt.verify(req.get('X-Access-Token'), process.env.JWT_KEY);
+    const key = payload.id + Date.now();
+
     const newChallenge = new Challenge({
       author: payload.id,
+      pictureKey: key,
       name: title,
       description,
       isPublic,
@@ -29,7 +33,12 @@ const makeChallenge = function makeChallenge(req, res) {
       tags: tags.split(','),
     });
 
-    newChallenge.save();
+    await Promise.all([newChallenge.save(),
+      s3.putObject({
+        Bucket: 'hanadal-server',
+        Key: key,
+        Body: req.body.picture,
+      }).promise()]);
     res.status(201).json({ result: 'success' });
   } catch (e) {
     res.status(403).json({ result: 'failure' });

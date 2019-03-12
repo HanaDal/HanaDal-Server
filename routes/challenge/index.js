@@ -1,8 +1,12 @@
 const router = require('express').Router();
+const multer = require('multer');
 const ctrl = require('./challenge.ctrl');
 
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
+
 router.get('/', ctrl.getChallengeList)
-  .post('/', ctrl.makeChallenge)
+  .post('/', upload.single('picture'), ctrl.makeChallenge)
   .get('/book', ctrl.getBooks)
   .get('/book/:id', ctrl.getBookDetail)
   .get('/:id', ctrl.getChallengeDetail)
