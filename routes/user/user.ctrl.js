@@ -1,31 +1,52 @@
 const jwt = require('jsonwebtoken');
+const axios = require('axios');
 const User = require('../../model/user');
 const Item = require('../../model/item');
 
 // TODO: Refresh 토큰 발급 및 만료기간 정하기
-const getJWT = id => jwt.sign({ id }, process.env.JWT_KEY, { expiresIn: '30d', issuer: 'hanadal-server' });
+const getJWT = id => jwt.sign({ id }, process.env.JWT_KEY, { expiresIn: '7d', issuer: 'hanadal-server' });
 
 
-const login = async function login(req, res) {
-  const {
-    id, name, tags, pictureUrl,
-  } = req.body;
-  const user = await User.findOne({ id });
+const login = function login(req, res) {
+  res.redirect('https://www.facebook.com/v3.2/dialog/oauth?'
+  + `client_id=${process.env.client_id}`
+  + `&redirect_uri=https://${req.hostname}/api/user/oauth`
+  + `&state=${process.env.csrftoken}`);
+};
 
-  if (user) res.status(200).json({ result: 'success', jwt: getJWT(user._id) });
-  else if (name !== undefined && tags !== undefined) {
-    const newUser = new User({
-      id,
-      name,
-      picture: pictureUrl || null,
-      tags: tags.split(','),
-      items: [],
-      cheering: [],
+
+const oauth = async function oauthWithFacebook(req, res) {
+  try {
+    const { code } = req.query;
+
+    const tokenResult = await axios.get('https://graph.facebook.com/v3.2/oauth/access_token', {
+      params: {
+        client_id: process.env.client_id,
+        redirect_uri: `https://${req.hostname}/api/user/oauth`,
+        client_secret: process.env.client_secret,
+        code,
+      },
     });
-    newUser.save()
-      .then(u => res.status(200).json({ result: 'success', jwt: getJWT(u._id) }))
-      .catch(() => res.status(500).json({ result: 'failure' }));
-  } else res.status(418).json({ result: 'continue' });
+
+    const userResult = await axios.get(`https://graph.facebook.com/me?fields=id,name,picture&access_token=${tokenResult.data.access_token}`);
+    let user = await User.findOne({ id: userResult.data.id });
+
+    if (!user) {
+      user = new User({
+        id: userResult.data.id,
+        name: userResult.data.name,
+        picture: userResult.data.picture.data.url,
+        tags: ['운동', '공부'],
+        items: [],
+        cheering: [],
+      });
+      await user.save();
+    }
+
+    res.status(200).set('authentication', getJWT(user.id)).json({ result: 'success' });
+  } catch (e) {
+    res.status(500).json({ result: 'failure' });
+  }
 };
 
 
@@ -145,6 +166,7 @@ const getStore = async function getStore(req, res) {
 
 
 exports.login = login;
+exports.oauth = oauth;
 exports.getProfile = getProfile;
 exports.modifyProfile = modifyProfile;
 exports.getCheering = getCheering;

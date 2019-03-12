@@ -1,7 +1,8 @@
 const router = require('express').Router();
 const ctrl = require('./user.ctrl');
 
-router.post('/login', ctrl.login)
+router.get('/login', ctrl.login)
+  .get('/oauth', ctrl.oauth)
   .get('/profile', ctrl.getProfile)
   .put('/profile', ctrl.modifyProfile)
   .get('/cheering', ctrl.getCheering)
