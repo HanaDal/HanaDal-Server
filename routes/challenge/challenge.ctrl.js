@@ -37,7 +37,7 @@ const makeChallenge = async function makeChallenge(req, res) {
       s3.putObject({
         Bucket: 'hanadal-server',
         Key: key,
-        Body: req.body.picture,
+        Body: req.file.picture,
       }).promise()]);
     res.status(201).json({ result: 'success' });
   } catch (e) {
