@@ -1,7 +1,9 @@
 const jwt = require('jsonwebtoken');
-const s3 = require('aws-sdk/clients/s3');
+const aws = require('aws-sdk');
 const Challenge = require('../../model/challenge');
 const Book = require('../../model/book');
+
+const s3 = new aws.S3();
 
 const getChallengeList = async function getChallengeList(req, res) {
   try {
@@ -41,6 +43,7 @@ const makeChallenge = async function makeChallenge(req, res) {
       }).promise()]);
     res.status(201).json({ result: 'success' });
   } catch (e) {
+    console.log(e);
     res.status(403).json({ result: 'failure' });
   }
 };
