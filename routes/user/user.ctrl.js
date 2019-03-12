@@ -35,7 +35,7 @@ const oauth = async function oauthWithFacebook(req, res) {
       user = new User({
         id: userResult.data.id,
         name: userResult.data.name,
-        picture: userResult.data.picture.data.url,
+        pictureUrl: userResult.data.picture.data.url,
         tags: ['운동', '공부'],
         items: [],
         cheering: [],
@@ -60,6 +60,7 @@ const getProfile = async function getUserInfoWithId(req, res) {
       res.status(200).json({
         result: 'success',
         name: user.name,
+        picture: user.pictureUrl,
         point: user.point,
         tags: user.tags,
       });
@@ -92,7 +93,7 @@ const getCheering = async function getCheering(req, res) {
         select: '_id pictureUrl achievementRate tags name author',
         populate: {
           path: 'author',
-          select: 'name picture',
+          select: 'name pictureUrl',
         },
       });
     cheering.cheering.forEach((e) => { e.isPressed = true; });

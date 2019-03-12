@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const QnA = require('../../model/qna');
 
 const getQnas = function getQnas(req, res) {
-  QnA.find({}, '-content -comment').populate('author', 'name picture')
+  QnA.find({}, '-content -comment').populate('author', 'name pictureUrl')
     .then(q => res.status(200).json(q))
     .catch(e => res.status(500).json({ result: 'failure', e }));
 };
@@ -33,7 +33,7 @@ const deleteQna = function deleteQna(req, res) {
 
 
 const getQnaDetail = async function getQnaDetail(req, res) {
-  const qna = await QnA.findById(req.params.id).select('-_id -comment._id -comment.author._id -__v').populate('author', 'name picture').populate('comment.author', 'name picture');
+  const qna = await QnA.findById(req.params.id).select('-_id -comment._id -comment.author._id -__v').populate('author', 'name pictureUrl').populate('comment.author', 'name pictureUrl');
   if (qna === null) {
     res.status(404).json({ result: 'failure' });
     return;
@@ -84,7 +84,7 @@ const getMyQuestion = async function getMyQuestionWithJWT(req, res) {
     const payload = jwt.verify(req.get('X-Access-Token'), process.env.JWT_KEY);
     const questions = await QnA
       .find({ author: payload.id }, '-content -comment')
-      .populate('author', 'name picture');
+      .populate('author', 'name pictureUrl');
     res.status(200).json(questions);
   } catch (e) {
     res.status(403).json({ result: 'failure' });
@@ -96,7 +96,7 @@ const getMyAnswer = async function getMyAnswerWithJWT(req, res) {
     const payload = jwt.verify(req.get('X-Access-Token'), process.env.JWT_KEY);
     const questions = await QnA
       .find({ comment: { $elemMatch: { author: payload.id } } }, '-content -comment')
-      .populate('author', 'name picture');
+      .populate('author', 'name pictureUrl');
     res.status(200).json(questions);
   } catch (e) {
     res.status(403).json({ result: 'failure' });

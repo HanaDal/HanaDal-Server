@@ -4,7 +4,7 @@ const Book = require('../../model/book');
 const getTrendingChallenges = async function getTrendingBooks(req, res) {
   const challenges = await Challenge
     .find({ isPublic: true }, '_id tags pictureUrl name achievementRate')
-    .populate('author', 'name picture')
+    .populate('author', 'name pictureUrl')
     .sort('-cheer');
   res.status(200).json(challenges);
 };

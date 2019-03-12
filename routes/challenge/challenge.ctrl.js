@@ -7,7 +7,7 @@ const getChallengeList = async function getChallengeList(req, res) {
   try {
     const payload = jwt.verify(req.get('X-Access-Token'), process.env.JWT_KEY);
     const challenges = await Challenge.find({ author: payload.id }, '_id tags pictureUrl name achievementRate')
-      .populate('author', 'name picture');
+      .populate('author', 'name pictureUrl');
     res.status(200).json(challenges);
   } catch (e) {
     res.status(403).json({ result: 'failure' });
@@ -25,7 +25,7 @@ const makeChallenge = async function makeChallenge(req, res) {
 
     const newChallenge = new Challenge({
       author: payload.id,
-      pictureKey: key,
+      pictureUrl: `https://s3.amazonaws.com/hanadal-server/${key}`,
       name: title,
       description,
       isPublic,
@@ -139,7 +139,7 @@ const postCommentAtChallenegeComment = async function postCommentAtChallenegeCom
 
 const getChallengeInfo = async function getChallengeInfoWithId(req, res) {
   const { id } = req.params;
-  const challenge = await Challenge.findById(id).select('name pictureUrl description tags author').populate('author', 'picture name');
+  const challenge = await Challenge.findById(id).select('name pictureUrl description tags author').populate('author', 'pictureUrl name');
   if (challenge === null) return res.status(404).json({ result: 'failure' });
   return res.status(200).json(challenge);
 };

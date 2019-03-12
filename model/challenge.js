@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const Challenge = new mongoose.Schema({
   author: { type: mongoose.Schema.Types.ObjectId, ref: 'user' },
-  pictureKey: { type: String },
+  pictureUrl: { type: String, default: 'https://s3.amazonaws.com/hanadal-server/icon.png' },
   name: String,
   description: String,
   achievementRate: { type: Number, default: 0 },
