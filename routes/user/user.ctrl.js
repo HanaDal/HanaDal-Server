@@ -43,7 +43,7 @@ const oauth = async function oauthWithFacebook(req, res) {
       await user.save();
     }
 
-    res.status(200).set('authentication', getJWT(user.id)).json({ result: 'success' });
+    res.status(200).set('authentication', getJWT(user._id)).json({ result: 'success' });
   } catch (e) {
     res.status(500).json({ result: 'failure' });
   }
