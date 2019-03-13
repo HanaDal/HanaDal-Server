@@ -28,7 +28,7 @@ const oauth = async function oauthWithFacebook(req, res) {
       },
     });
 
-    const userResult = await axios.get(`https://graph.facebook.com/me?fields=id,name,picture&access_token=${tokenResult.data.access_token}`);
+    const userResult = await axios.get(`https://graph.facebook.com/me?fields=id,name,picture.height(300).width(300)&access_token=${tokenResult.data.access_token}`);
     let user = await User.findOne({ id: userResult.data.id });
 
     if (!user) {
