@@ -24,10 +24,10 @@ const makeChallenge = async function makeChallenge(req, res) {
     } = req.body;
     const payload = jwt.verify(req.get('X-Access-Token'), process.env.JWT_KEY);
     const key = payload.id + Date.now();
+    let s3Promise = Promise.resolve();
 
     const newChallenge = new Challenge({
       author: payload.id,
-      pictureUrl: `https://s3.amazonaws.com/hanadal-server/${key}`,
       name: title,
       description,
       isPublic,
@@ -35,12 +35,16 @@ const makeChallenge = async function makeChallenge(req, res) {
       tags: tags.split(','),
     });
 
-    await Promise.all([newChallenge.save(),
-      s3.putObject({
+    if (req.file.picture) {
+      newChallenge.pictureUrl = `https://s3.amazonaws.com/hanadal-server/${key}`;
+      s3Promise = s3.putObject({
         Bucket: 'hanadal-server',
         Key: key,
         Body: req.file.picture,
-      }).promise()]);
+      }).promise();
+    }
+
+    await Promise.all([newChallenge.save(), s3Promise]);
     res.status(201).json({ result: 'success' });
   } catch (e) {
     console.log(e);
