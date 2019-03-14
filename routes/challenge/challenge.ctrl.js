@@ -34,6 +34,7 @@ const makeChallenge = async function makeChallenge(req, res) {
       tags: tags.split(','),
     });
 
+    console.log(req.file);
     if (req.file) {
       newChallenge.pictureUrl = `https://s3.amazonaws.com/hanadal-server/${key}`;
       s3Promise = s3.putObject({
