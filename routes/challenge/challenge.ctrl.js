@@ -16,14 +16,13 @@ const getChallengeList = async function getChallengeList(req, res) {
   }
 };
 
-// TODO: 사진 추가하기
 const makeChallenge = async function makeChallenge(req, res) {
   try {
     const {
       title, description, isPublic, isStrict, tags,
     } = req.body;
     const payload = jwt.verify(req.get('X-Access-Token'), process.env.JWT_KEY);
-    const key = payload.id + Date.now();
+    const key = payload.id + title + Date.now();
     let s3Promise = Promise.resolve();
 
     const newChallenge = new Challenge({
@@ -40,7 +39,8 @@ const makeChallenge = async function makeChallenge(req, res) {
       s3Promise = s3.putObject({
         Bucket: 'hanadal-server',
         Key: key,
-        Body: req.file.picture,
+        Body: req.file.buffer,
+        ContentType: req.file.mimetype,
       }).promise();
     }
 
