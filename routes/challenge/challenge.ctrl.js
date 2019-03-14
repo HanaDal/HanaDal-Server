@@ -63,6 +63,7 @@ const getChallengeDetail = async function getChallengeDetailWithJWT(req, res) {
       result: 'success',
       _id: challenge._id,
       isMine: challenge.author.toString() === payload.id,
+      isStrict: challenge.isStrict,
       day: challenge.diary.length,
       diary: challenge.diary,
       todo: challenge.todo,
