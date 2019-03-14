@@ -22,7 +22,7 @@ const makeChallenge = async function makeChallenge(req, res) {
       title, description, isPublic, isStrict, tags,
     } = req.body;
     const payload = jwt.verify(req.get('X-Access-Token'), process.env.JWT_KEY);
-    const key = payload.id + title + Date.now();
+    const key = payload.id + title.replace(/"/g, '') + Date.now();
     let s3Promise = Promise.resolve();
 
     const newChallenge = new Challenge({
