@@ -27,11 +27,11 @@ const makeChallenge = async function makeChallenge(req, res) {
 
     const newChallenge = new Challenge({
       author: payload.id,
-      name: title,
-      description,
+      name: title.replace(/[^\\"]*/),
+      description: description.replace(/[^\\"]*/),
       isPublic,
       isStrict,
-      tags: tags.split(','),
+      tags: tags.replace(/[^\\"]*/).split(','),
     });
 
     console.log(req.file);
