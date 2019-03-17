@@ -34,7 +34,6 @@ const makeChallenge = async function makeChallenge(req, res) {
       tags: tags.replace(/"/g, '').split(','),
     });
 
-    console.log(req.file);
     if (req.file) {
       newChallenge.pictureUrl = `https://s3.amazonaws.com/hanadal-server/${key}`;
       s3Promise = s3.putObject({
@@ -48,7 +47,6 @@ const makeChallenge = async function makeChallenge(req, res) {
     await Promise.all([newChallenge.save(), s3Promise]);
     res.status(201).json({ result: 'success' });
   } catch (e) {
-    console.log(e);
     res.status(403).json({ result: 'failure' });
   }
 };
