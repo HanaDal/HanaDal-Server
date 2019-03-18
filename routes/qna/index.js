@@ -9,7 +9,7 @@ router.get('/', ctrl.getQnas)
   .get('/my-answer', ctrl.getMyAnswer)
   .get('/:id', ctrl.getQnaDetail)
   .post('/:id', ctrl.writeQnaComment)
-//  .delete('/:id', ctrl.deleteQna)
+  .delete('/:id', ctrl.deleteQna)
   .put('/:id', ctrl.modifyQna);
 
 module.exports = router;

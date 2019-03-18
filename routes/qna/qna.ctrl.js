@@ -25,10 +25,14 @@ const writeQna = function writeQna(req, res) {
 
 
 const deleteQna = function deleteQna(req, res) {
-  // TODO: JWT로 유저 구별하기
-  QnA.findByIdAndRemove(req.body.id, () => {
-    res.status(200).json({ result: 'success' });
-  });
+  try {
+    const payload = jwt.verify(req.get('X-Access-Token'), process.env.JWT_KEY);
+    QnA.findOneAndDelete({ _id: req.params.id, author: payload.id })
+      .then((result) => {
+        if (result) res.status(200).json({ result: 'success' });
+        else res.status(404).json({ result: 'success' });
+      });
+  } catch (e) { res.status(403).json({ result: 'failure' }); }
 };
 
 
