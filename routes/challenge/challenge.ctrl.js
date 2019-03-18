@@ -94,11 +94,13 @@ const postChallengeTodo = async function postChallengeDiaryWithId(req, res) {
 
 const getChallengeComment = async function getChallengeCommentWithId(req, res) {
   const { id } = req.params;
-  const comments = await Challenge.findById(id).select('issue.author issue.title issue.comment').populate('issue.author', 'name pictureUrl');
-  comments.issue.forEach((e) => {
-    e.comment = e.comment.length;
+  const challenge = await Challenge.findById(id).select('tags issue.author issue.title issue.comment').populate('issue.author', 'name pictureUrl');
+  challenge.forEach((element) => {
+    const newElem = element;
+    newElem.tags = challenge.tags;
+    newElem.answerCount = element.comment.length;
   });
-  res.status(200).json(comments.issue);
+  res.status(200).json(challenge.issue);
 };
 
 const postChallengeComment = async function postChallengeCommentWithJWT(req, res) {
