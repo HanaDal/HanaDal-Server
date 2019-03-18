@@ -94,7 +94,7 @@ const postChallengeTodo = async function postChallengeDiaryWithId(req, res) {
 
 const getChallengeComment = async function getChallengeCommentWithId(req, res) {
   const { id } = req.params;
-  const comments = await Challenge.findById(id).select('issue.author issue.title issue.comment').populate('issue.author');
+  const comments = await Challenge.findById(id).select('issue.author issue.title issue.comment').populate('issue.author', 'name pictureUrl');
   comments.issue.forEach((e) => {
     e.comment = e.comment.length;
   });
@@ -121,23 +121,35 @@ const postChallengeComment = async function postChallengeCommentWithJWT(req, res
   }
 };
 
-// FIXME: tags가 없어요, comment가 comment에요 안드로이드랑 맞춰야 해요, 보류
 const getCommentDetail = async function getCommentDetailWithId(req, res) {
   const { id, no } = req.params;
 
-  const challenge = await Challenge.findById(id, 'issue').populate(`issue.${no}.author issue.${no}.comment.author`);
+  const challenge = await Challenge.findById(id, { issue: { $slice: [Number(no), 1] } })
+    .populate('issue.author issue.comment.author', 'name pictureUrl');
   if (challenge === null) return res.status(404).json({ result: 'failure' });
-  console.log(challenge.issue[no]);
-  return res.status(200).json({ result: 'success' });
+  return res.status(200).json({
+    result: 'success',
+    title: challenge.issue[0].title,
+    tags: challenge.tags,
+    content: challenge.issue[0].content,
+    author: challenge.issue[0].author,
+    comment: challenge.issue[0].comment,
+  });
 };
 
-// FIXME: array에서 특정 인덱스의 필드만 수정하는법??
-const postCommentAtChallenegeComment = async function postCommentAtChallenegeCommentWithJWT(req, res) {
+const postCommentAtChallenegeComment = async function postComment(req, res) {
   try {
     const { id, no } = req.params;
     const { content } = req.body;
     const payload = jwt.verify(req.get('X-Access-Token'), process.env.JWT_KEY);
-    // const challenge = await Challenge.findOneAndUpdate({ _id: id, 'issue.$': no }, { $push: });
+    await Challenge.findByIdAndUpdate(id, {
+      $push: {
+        [`issue.${no}.comment`]: {
+          author: payload.id,
+          content,
+        },
+      },
+    });
     return res.status(201).json({ result: 'success' });
   } catch (e) {
     return res.status(403).json({ result: 'failure' });
