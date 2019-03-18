@@ -119,6 +119,7 @@ const postChallengeComment = async function postChallengeCommentWithJWT(req, res
     if (challenge === null) return res.status(404).json({ result: 'failure' });
     return res.status(201).json({ result: 'success' });
   } catch (e) {
+    console.log(e);
     return res.status(403).json({ result: 'failure' });
   }
 };
