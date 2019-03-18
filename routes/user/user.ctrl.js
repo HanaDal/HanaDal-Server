@@ -3,7 +3,6 @@ const axios = require('axios');
 const User = require('../../model/user');
 const Item = require('../../model/item');
 
-// TODO: Refresh 토큰 발급 및 만료기간 정하기
 const getJWT = id => jwt.sign({ id }, process.env.JWT_KEY, { expiresIn: '7d', issuer: 'hanadal-server' });
 
 
